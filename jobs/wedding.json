@@ -1,0 +1,22 @@
+{
+  "template": "wedding_film_01",
+  "order_id": "DEMO-W01",
+  "preview": true,
+  "inputs": {
+    "groom": "김민준",
+    "bride": "이하윤",
+    "met": "2018. 05. 12",
+    "msg": "서로의 계절을 지나\n이제 한 곳을 바라봅니다",
+    "wedding_at": "2026. 11. 07  토요일  오후 1시\n그랜드호텔 3층 그랜드볼룸",
+    "g_kid": "storage/uploads/demo/photo1.jpg",
+    "g_1": "storage/uploads/demo/photo2.jpg",
+    "g_2": "storage/uploads/demo/photo4.jpg",
+    "b_kid": "storage/uploads/demo/photo5.jpg",
+    "b_1": "storage/uploads/demo/photo6.jpg",
+    "b_2": "storage/uploads/demo/photo3.jpg",
+    "couple1": "storage/uploads/demo/photo2.jpg",
+    "couple2": "storage/uploads/demo/photo4.jpg",
+    "couple3": "storage/uploads/demo/photo5.jpg",
+    "main": "storage/uploads/demo/photo6.jpg"
+  }
+}

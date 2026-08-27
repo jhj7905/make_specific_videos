@@ -1,0 +1,1048 @@
+{
+  "id": "wedding_film_01",
+  "name": "웨딩 성장영상",
+  "category": "웨딩",
+  "version": "1.0.0",
+  "aspect": "16:9",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "bgm": {
+    "procedural": "warm_pad",
+    "gain_db": -15,
+    "fade_in": 2.0,
+    "fade_out": 3.0,
+    "license": "PLACEHOLDER - 판매 전 상업 라이선스 음원으로 교체 필수"
+  },
+  "inputs": [
+    {
+      "id": "groom",
+      "type": "text",
+      "required": true,
+      "max_len": 12,
+      "guide": "신랑 이름",
+      "default": "김민준"
+    },
+    {
+      "id": "bride",
+      "type": "text",
+      "required": true,
+      "max_len": 12,
+      "guide": "신부 이름",
+      "default": "이하윤"
+    },
+    {
+      "id": "met",
+      "type": "text",
+      "required": false,
+      "max_len": 26,
+      "guide": "만난 날",
+      "default": "2018. 05. 12"
+    },
+    {
+      "id": "msg",
+      "type": "text",
+      "required": false,
+      "max_len": 70,
+      "guide": "청첩 문구",
+      "default": "서로의 계절을 지나\n이제 한 곳을 바라봅니다"
+    },
+    {
+      "id": "wedding_at",
+      "type": "text",
+      "required": false,
+      "max_len": 40,
+      "guide": "예식 일시/장소",
+      "default": "2026. 11. 07  토요일  오후 1시\n그랜드호텔 3층 그랜드볼룸"
+    },
+    {
+      "id": "g_kid",
+      "type": "image",
+      "required": true,
+      "guide": "신랑 어린시절"
+    },
+    {
+      "id": "g_1",
+      "type": "image",
+      "required": true,
+      "guide": "신랑 성장 1"
+    },
+    {
+      "id": "g_2",
+      "type": "image",
+      "required": true,
+      "guide": "신랑 성장 2"
+    },
+    {
+      "id": "b_kid",
+      "type": "image",
+      "required": true,
+      "guide": "신부 어린시절"
+    },
+    {
+      "id": "b_1",
+      "type": "image",
+      "required": true,
+      "guide": "신부 성장 1"
+    },
+    {
+      "id": "b_2",
+      "type": "image",
+      "required": true,
+      "guide": "신부 성장 2"
+    },
+    {
+      "id": "couple1",
+      "type": "image",
+      "required": true,
+      "guide": "둘이 함께 1"
+    },
+    {
+      "id": "couple2",
+      "type": "image",
+      "required": true,
+      "guide": "둘이 함께 2"
+    },
+    {
+      "id": "couple3",
+      "type": "image",
+      "required": true,
+      "guide": "둘이 함께 3"
+    },
+    {
+      "id": "main",
+      "type": "image",
+      "required": true,
+      "guide": "메인 사진"
+    }
+  ],
+  "styles": {
+    "serif_title": {
+      "font": "Pretendard-Regular.otf",
+      "size": 96,
+      "color": "#F7F1E8",
+      "letter_spacing": 14,
+      "line_height": 1.5,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 26,
+        "opacity": 0.6,
+        "offset": [
+          0,
+          6
+        ]
+      }
+    },
+    "names": {
+      "font": "Pretendard-Bold.otf",
+      "size": 78,
+      "color": "#FFFFFF",
+      "letter_spacing": 8,
+      "line_height": 1.4,
+      "max_width": 0.85,
+      "shadow": {
+        "color": "#000000",
+        "blur": 22,
+        "opacity": 0.65,
+        "offset": [
+          0,
+          5
+        ]
+      }
+    },
+    "chapter": {
+      "font": "Pretendard-Regular.otf",
+      "size": 34,
+      "color": "#E8C9A0",
+      "letter_spacing": 16,
+      "uppercase": true,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 16,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          3
+        ]
+      }
+    },
+    "caption": {
+      "font": "Pretendard-Bold.otf",
+      "size": 52,
+      "color": "#FFFFFF",
+      "letter_spacing": 2,
+      "line_height": 1.45,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 20,
+        "opacity": 0.75,
+        "offset": [
+          0,
+          4
+        ]
+      }
+    },
+    "invite": {
+      "font": "Pretendard-Regular.otf",
+      "size": 58,
+      "color": "#F7F1E8",
+      "letter_spacing": 4,
+      "line_height": 1.7,
+      "max_width": 0.72,
+      "shadow": {
+        "color": "#000000",
+        "blur": 22,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          4
+        ]
+      }
+    },
+    "info": {
+      "font": "Pretendard-Bold.otf",
+      "size": 46,
+      "color": "#FFFFFF",
+      "letter_spacing": 5,
+      "line_height": 1.8,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 18,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          4
+        ]
+      }
+    }
+  },
+  "scenes": [
+    {
+      "name": "title",
+      "dur": 5.0,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{main}}",
+          "fit": "blur",
+          "grade": "filmic",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.2
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR STORY",
+          "style": "chapter",
+          "pos": [
+            "center",
+            0.38
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.6,
+            "dur": 1.4
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{groom}}   ·   {{bride}}",
+          "style": "serif_title",
+          "pos": [
+            "center",
+            0.5
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.2,
+            "dur": 1.5,
+            "distance": 34
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 1.0
+      }
+    },
+    {
+      "name": "groom-kid",
+      "dur": 4.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{g_kid}}",
+          "fit": "blurpad",
+          "grade": "filmic",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.06,
+              1.0
+            ]
+          },
+          "fit_margin": 0.74,
+          "fit_shift": [
+            0.0,
+            -0.085
+          ],
+          "portrait": {
+            "fit_margin": 0.8,
+            "fit_shift": [
+              0.0,
+              -0.075
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          },
+          "portrait": {
+            "params": {
+              "ratio": 0.045
+            }
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 9
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.26,
+            "strength": 0.72
+          },
+          "portrait": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.24,
+              "strength": 0.7
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "the groom",
+          "style": "chapter",
+          "pos": [
+            "center",
+            0.815
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.0
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.845
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{groom}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.895
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 1.0,
+            "distance": 30
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.915
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "groom-grow",
+      "dur": 4.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{g_1}}",
+          "fit": "blur",
+          "grade": "filmic",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.36
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{g_1}}",
+          "fit": "cover",
+          "grade": "filmic",
+          "frame": [
+            0.145,
+            0.17,
+            0.32,
+            0.62
+          ],
+          "radius": 10,
+          "border_width": 12,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.09
+            ]
+          },
+          "frame_ar": 0.917,
+          "portrait": {
+            "frame": [
+              0.045,
+              0.355,
+              0.44,
+              0.44
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{g_2}}",
+          "fit": "cover",
+          "grade": "filmic",
+          "frame": [
+            0.535,
+            0.17,
+            0.32,
+            0.62
+          ],
+          "radius": 10,
+          "border_width": 12,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.09,
+              1.0
+            ]
+          },
+          "frame_ar": 0.917,
+          "portrait": {
+            "frame": [
+              0.515,
+              0.355,
+              0.44,
+              0.44
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.9
+      }
+    },
+    {
+      "name": "bride-kid",
+      "dur": 4.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{b_kid}}",
+          "fit": "blurpad",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.06,
+              1.0
+            ]
+          },
+          "fit_margin": 0.74,
+          "fit_shift": [
+            0.0,
+            -0.085
+          ],
+          "portrait": {
+            "fit_margin": 0.8,
+            "fit_shift": [
+              0.0,
+              -0.075
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          },
+          "portrait": {
+            "params": {
+              "ratio": 0.045
+            }
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 9
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.26,
+            "strength": 0.72
+          },
+          "portrait": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.24,
+              "strength": 0.7
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "the bride",
+          "style": "chapter",
+          "pos": [
+            "center",
+            0.815
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.0
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.845
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{bride}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.895
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 1.0,
+            "distance": 30
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.915
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "bride-grow",
+      "dur": 4.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{b_1}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.36
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{b_1}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.145,
+            0.17,
+            0.32,
+            0.62
+          ],
+          "radius": 10,
+          "border_width": 12,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.09
+            ]
+          },
+          "frame_ar": 0.917,
+          "portrait": {
+            "frame": [
+              0.045,
+              0.355,
+              0.44,
+              0.44
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{b_2}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.535,
+            0.17,
+            0.32,
+            0.62
+          ],
+          "radius": 10,
+          "border_width": 12,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.09,
+              1.0
+            ]
+          },
+          "frame_ar": 0.917,
+          "portrait": {
+            "frame": [
+              0.515,
+              0.355,
+              0.44,
+              0.44
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 1.0
+      }
+    },
+    {
+      "name": "met",
+      "dur": 4.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{couple1}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "headroom": 0.36,
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.12,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.3,
+            "strength": 0.68
+          }
+        },
+        {
+          "type": "text",
+          "content": "we met",
+          "style": "chapter",
+          "pos": [
+            "center",
+            0.805
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.5,
+            "dur": 1.0
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.755
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{met}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.888
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.8,
+            "dur": 1.0,
+            "distance": 30
+          },
+          "portrait": {
+            "pos": [
+              "center",
+              0.845
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothleft",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "together",
+      "dur": 4.8,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{couple2}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.34
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{couple1}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.075,
+            0.22,
+            0.26,
+            0.52
+          ],
+          "radius": 8,
+          "border_width": 10,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          },
+          "frame_ar": 0.85,
+          "portrait": {
+            "frame": [
+              0.075,
+              0.135,
+              0.4,
+              0.4
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{couple2}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.37,
+            0.18,
+            0.26,
+            0.6
+          ],
+          "radius": 8,
+          "border_width": 10,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.08,
+              1.0
+            ]
+          },
+          "frame_ar": 0.85,
+          "portrait": {
+            "frame": [
+              0.525,
+              0.375,
+              0.4,
+              0.4
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{couple3}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.665,
+            0.22,
+            0.26,
+            0.52
+          ],
+          "radius": 8,
+          "border_width": 10,
+          "border_color": "#F7F1E8",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          },
+          "frame_ar": 0.85,
+          "portrait": {
+            "frame": [
+              0.075,
+              0.615,
+              0.4,
+              0.4
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 1.0
+      }
+    },
+    {
+      "name": "invite",
+      "dur": 5.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{main}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.07
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.3
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg}}",
+          "style": "invite",
+          "pos": [
+            "center",
+            0.48
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.8,
+            "dur": 1.4,
+            "distance": 36
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 1.0
+      }
+    },
+    {
+      "name": "info",
+      "dur": 5.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{main}}",
+          "fit": "blur",
+          "grade": "filmic",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.05,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.44
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.07
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{groom}}   ♥   {{bride}}",
+          "style": "names",
+          "pos": [
+            "center",
+            0.4
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.2
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{wedding_at}}",
+          "style": "info",
+          "pos": [
+            "center",
+            0.58
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.2,
+            "dur": 1.2,
+            "distance": 30
+          }
+        }
+      ]
+    }
+  ],
+  "design": [
+    1920,
+    1080
+  ]
+}

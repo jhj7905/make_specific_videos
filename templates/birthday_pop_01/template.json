@@ -1,0 +1,744 @@
+{
+  "id": "birthday_pop_01",
+  "name": "생일 팝",
+  "category": "생일",
+  "version": "1.0.0",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "fps": 30,
+  "bgm": {
+    "procedural": "neon_pulse",
+    "gain_db": -13,
+    "fade_in": 0.6,
+    "fade_out": 1.8,
+    "license": "PLACEHOLDER - 판매 전 상업 라이선스 음원으로 교체 필수"
+  },
+  "inputs": [
+    {
+      "id": "name",
+      "type": "text",
+      "required": true,
+      "max_len": 12,
+      "guide": "주인공 이름",
+      "default": "서연"
+    },
+    {
+      "id": "age",
+      "type": "text",
+      "required": false,
+      "max_len": 6,
+      "guide": "나이/횟수",
+      "default": "29"
+    },
+    {
+      "id": "from",
+      "type": "text",
+      "required": false,
+      "max_len": 18,
+      "guide": "보내는 사람",
+      "default": "우리 모두가"
+    },
+    {
+      "id": "msg1",
+      "type": "text",
+      "required": false,
+      "max_len": 26,
+      "guide": "메시지 1",
+      "default": "올해도 네 덕분에"
+    },
+    {
+      "id": "msg2",
+      "type": "text",
+      "required": false,
+      "max_len": 26,
+      "guide": "메시지 2",
+      "default": "많이 웃었어"
+    },
+    {
+      "id": "wish",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "소원/축하 문구",
+      "default": "올해는 더 좋은 일만\n가득하길"
+    },
+    {
+      "id": "p1",
+      "type": "image",
+      "required": true,
+      "guide": "메인 사진"
+    },
+    {
+      "id": "p2",
+      "type": "image",
+      "required": true,
+      "guide": "콜라주 1"
+    },
+    {
+      "id": "p3",
+      "type": "image",
+      "required": true,
+      "guide": "콜라주 2"
+    },
+    {
+      "id": "p4",
+      "type": "image",
+      "required": true,
+      "guide": "콜라주 3"
+    },
+    {
+      "id": "p5",
+      "type": "image",
+      "required": true,
+      "guide": "콜라주 4"
+    },
+    {
+      "id": "p6",
+      "type": "image",
+      "required": true,
+      "guide": "엔딩 사진"
+    }
+  ],
+  "styles": {
+    "huge": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 156,
+      "color": "#FFFFFF",
+      "gradient": [
+        "#FFE86B",
+        "#FF7AC8"
+      ],
+      "letter_spacing": -8,
+      "line_height": 1.02,
+      "max_width": 0.9,
+      "stroke": {
+        "color": "#2B1B4A",
+        "width": 5
+      },
+      "shadow": {
+        "color": "#2B1B4A",
+        "blur": 8,
+        "opacity": 0.9,
+        "offset": [
+          0,
+          12
+        ]
+      }
+    },
+    "pop": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 96,
+      "color": "#FFFFFF",
+      "letter_spacing": -3,
+      "line_height": 1.22,
+      "max_width": 0.84,
+      "stroke": {
+        "color": "#2B1B4A",
+        "width": 4
+      },
+      "shadow": {
+        "color": "#2B1B4A",
+        "blur": 6,
+        "opacity": 0.85,
+        "offset": [
+          0,
+          9
+        ]
+      }
+    },
+    "label": {
+      "font": "Pretendard-Bold.otf",
+      "size": 40,
+      "color": "#FFE86B",
+      "letter_spacing": 12,
+      "uppercase": true,
+      "max_width": 0.86,
+      "shadow": {
+        "color": "#2B1B4A",
+        "blur": 12,
+        "opacity": 0.8,
+        "offset": [
+          0,
+          4
+        ]
+      }
+    },
+    "note": {
+      "font": "Pretendard-Bold.otf",
+      "size": 64,
+      "color": "#FFFFFF",
+      "letter_spacing": -1.5,
+      "line_height": 1.4,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 20,
+        "opacity": 0.75,
+        "offset": [
+          0,
+          6
+        ]
+      }
+    },
+    "number": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 320,
+      "color": "#FFFFFF",
+      "gradient": [
+        "#FFE86B",
+        "#FF9A3D"
+      ],
+      "letter_spacing": -14,
+      "max_width": 0.95,
+      "stroke": {
+        "color": "#2B1B4A",
+        "width": 7
+      },
+      "shadow": {
+        "color": "#2B1B4A",
+        "blur": 10,
+        "opacity": 0.9,
+        "offset": [
+          0,
+          18
+        ]
+      }
+    }
+  },
+  "scenes": [
+    {
+      "name": "hook",
+      "dur": 2.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p1}}",
+          "fit": "cover",
+          "grade": "warm",
+          "headroom": 0.34,
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.18,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "flash",
+          "params": {
+            "at": 0.0,
+            "dur": 0.3,
+            "amount": 0.9
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.5,
+            "strength": 0.6
+          },
+          "landscape": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.36,
+              "strength": 0.66
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "happy birthday",
+          "style": "label",
+          "pos": [
+            "center",
+            0.7
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.15,
+            "dur": 0.4
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.735
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{name}}",
+          "style": "huge",
+          "pos": [
+            "center",
+            0.8
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.3,
+            "dur": 0.5,
+            "distance": 60
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.855
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "zoomin",
+        "dur": 0.35
+      }
+    },
+    {
+      "name": "age",
+      "dur": 2.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p2}}",
+          "fit": "blur",
+          "grade": "warm",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.12
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{age}}",
+          "style": "number",
+          "pos": [
+            "center",
+            0.46
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.1,
+            "dur": 0.45,
+            "distance": 70
+          }
+        },
+        {
+          "type": "text",
+          "content": "번째 생일",
+          "style": "note",
+          "pos": [
+            "center",
+            0.68
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.45,
+            "dur": 0.4
+          }
+        }
+      ],
+      "transition": {
+        "name": "circleopen",
+        "dur": 0.45
+      }
+    },
+    {
+      "name": "collage",
+      "dur": 4.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p3}}",
+          "fit": "blur",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.35
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p2}}",
+          "fit": "cover",
+          "grade": "warm",
+          "frame": [
+            0.055,
+            0.175,
+            0.42,
+            0.28
+          ],
+          "radius": 28,
+          "border_width": 8,
+          "border_color": "#FFFFFF",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ]
+          },
+          "frame_ar": 0.84,
+          "landscape": {
+            "frame": [
+              0.085,
+              0.27,
+              0.2,
+              0.2
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p3}}",
+          "fit": "cover",
+          "grade": "warm",
+          "frame": [
+            0.525,
+            0.175,
+            0.42,
+            0.28
+          ],
+          "radius": 28,
+          "border_width": 8,
+          "border_color": "#FFFFFF",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.1,
+              1.0
+            ]
+          },
+          "frame_ar": 0.84,
+          "landscape": {
+            "frame": [
+              0.305,
+              0.27,
+              0.2,
+              0.2
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p4}}",
+          "fit": "cover",
+          "grade": "warm",
+          "frame": [
+            0.055,
+            0.485,
+            0.42,
+            0.28
+          ],
+          "radius": 28,
+          "border_width": 8,
+          "border_color": "#FFFFFF",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.08,
+              1.0
+            ]
+          },
+          "frame_ar": 0.84,
+          "landscape": {
+            "frame": [
+              0.525,
+              0.27,
+              0.2,
+              0.2
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p5}}",
+          "fit": "cover",
+          "grade": "warm",
+          "frame": [
+            0.525,
+            0.485,
+            0.42,
+            0.28
+          ],
+          "radius": 28,
+          "border_width": 8,
+          "border_color": "#FFFFFF",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ]
+          },
+          "frame_ar": 0.84,
+          "landscape": {
+            "frame": [
+              0.745,
+              0.27,
+              0.2,
+              0.2
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{from}}",
+          "style": "label",
+          "pos": [
+            "center",
+            0.115
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.3,
+            "dur": 0.6
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.085
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg1}}\n{{msg2}}",
+          "style": "note",
+          "pos": [
+            "center",
+            0.855
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.6,
+            "dur": 0.7,
+            "distance": 40
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.865
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "wipeleft",
+        "dur": 0.4
+      }
+    },
+    {
+      "name": "moment",
+      "dur": 3.0,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p4}}",
+          "fit": "cover",
+          "grade": "warm",
+          "headroom": 0.36,
+          "motion": {
+            "kind": "pan",
+            "zoom": [
+              1.12,
+              1.12
+            ],
+            "direction": "right"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "top",
+            "size": 0.42,
+            "strength": 0.6
+          },
+          "landscape": {
+            "params": {
+              "shape": "top",
+              "size": 0.3,
+              "strength": 0.66
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg1}}",
+          "style": "pop",
+          "pos": [
+            "center",
+            0.16
+          ],
+          "anim": {
+            "kind": "fade_down",
+            "at": 0.2,
+            "dur": 0.5,
+            "distance": 44
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.135
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "slideleft",
+        "dur": 0.4
+      }
+    },
+    {
+      "name": "moment2",
+      "dur": 3.0,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p5}}",
+          "fit": "cover",
+          "grade": "neon",
+          "headroom": 0.36,
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.14
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.44,
+            "strength": 0.62
+          },
+          "landscape": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.3,
+              "strength": 0.68
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg2}}",
+          "style": "pop",
+          "pos": [
+            "center",
+            0.83
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.5,
+            "distance": 44
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.865
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadewhite",
+        "dur": 0.4
+      }
+    },
+    {
+      "name": "wish",
+      "dur": 4.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p6}}",
+          "fit": "blur",
+          "grade": "warm",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 30,
+            "opacity": 0.3
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "center",
+            "size": 0.6,
+            "center": 0.48,
+            "strength": 0.3
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{wish}}",
+          "style": "pop",
+          "pos": [
+            "center",
+            0.44
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.4,
+            "dur": 0.9,
+            "distance": 50
+          }
+        },
+        {
+          "type": "text",
+          "content": "🎂 {{name}}",
+          "style": "label",
+          "pos": [
+            "center",
+            0.62
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 1.4,
+            "dur": 0.8
+          }
+        }
+      ]
+    }
+  ],
+  "design": [
+    1080,
+    1920
+  ]
+}

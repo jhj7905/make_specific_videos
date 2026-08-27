@@ -1,0 +1,21 @@
+{
+  "template": "propose_neon_01",
+  "order_id": "DEMO-propose",
+  "preview": true,
+  "inputs": {
+    "name_a": "지훈",
+    "name_b": "서연",
+    "first_date": "2021. 04. 17",
+    "msg1": "너를 만난 그날부터",
+    "msg2": "매일이 특별해졌어",
+    "msg3": "앞으로의 모든 계절을\n너와 함께 걷고 싶어",
+    "closing": "나와 결혼해 줄래?",
+    "sign": "2026. 09. 12  ·  남산 서울타워",
+    "photo1": "storage/uploads/demo/0B5790CA-5D5B-4EBD-A97F-0B08C46D0DE7_1_105_c.jpeg",
+    "photo2": "storage/uploads/demo/43DA7F8A-0D0B-418A-B201-C1F56ACE8F65_1_105_c.jpeg",
+    "photo3": "storage/uploads/demo/5FF127BE-7F10-4663-BDB2-819CD0284703_1_105_c.jpeg",
+    "photo4": "storage/uploads/demo/BA26317E-F80A-47A3-8038-A18C31DCE540_1_105_c.jpeg",
+    "photo5": "storage/uploads/demo/BB576DE0-CC00-4675-BB8A-BD75136FE32E_1_105_c.jpeg",
+    "photo6": "storage/uploads/demo/C1301D42-9510-4765-95E5-7C093048A031_1_105_c.jpeg"
+  }
+}

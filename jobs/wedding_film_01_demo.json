@@ -1,0 +1,22 @@
+{
+  "template": "wedding_film_01",
+  "order_id": "DEMO-wedding",
+  "preview": true,
+  "inputs": {
+    "groom": "김민준",
+    "bride": "이하윤",
+    "met": "2018. 05. 12",
+    "msg": "서로의 계절을 지나\n이제 한 곳을 바라봅니다",
+    "wedding_at": "2026. 11. 07  토요일  오후 1시\n그랜드호텔 3층 그랜드볼룸",
+    "g_kid": "storage/uploads/demo/0B5790CA-5D5B-4EBD-A97F-0B08C46D0DE7_1_105_c.jpeg",
+    "g_1": "storage/uploads/demo/43DA7F8A-0D0B-418A-B201-C1F56ACE8F65_1_105_c.jpeg",
+    "g_2": "storage/uploads/demo/5FF127BE-7F10-4663-BDB2-819CD0284703_1_105_c.jpeg",
+    "b_kid": "storage/uploads/demo/BA26317E-F80A-47A3-8038-A18C31DCE540_1_105_c.jpeg",
+    "b_1": "storage/uploads/demo/BB576DE0-CC00-4675-BB8A-BD75136FE32E_1_105_c.jpeg",
+    "b_2": "storage/uploads/demo/C1301D42-9510-4765-95E5-7C093048A031_1_105_c.jpeg",
+    "couple1": "storage/uploads/demo/D3A4AAD2-D718-40F1-9196-45EDF9A0A20B_1_105_c.jpeg",
+    "couple2": "storage/uploads/demo/D7156679-F557-46E8-BBC7-7C5953F2DB65_1_105_c.jpeg",
+    "couple3": "storage/uploads/demo/0B5790CA-5D5B-4EBD-A97F-0B08C46D0DE7_1_105_c.jpeg",
+    "main": "storage/uploads/demo/43DA7F8A-0D0B-418A-B201-C1F56ACE8F65_1_105_c.jpeg"
+  }
+}

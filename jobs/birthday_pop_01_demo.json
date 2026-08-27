@@ -1,0 +1,19 @@
+{
+  "template": "birthday_pop_01",
+  "order_id": "DEMO-birthday",
+  "preview": true,
+  "inputs": {
+    "name": "서연",
+    "age": "29",
+    "from": "우리 모두가",
+    "msg1": "올해도 네 덕분에",
+    "msg2": "많이 웃었어",
+    "wish": "올해는 더 좋은 일만\n가득하길",
+    "p1": "storage/uploads/demo/0B5790CA-5D5B-4EBD-A97F-0B08C46D0DE7_1_105_c.jpeg",
+    "p2": "storage/uploads/demo/43DA7F8A-0D0B-418A-B201-C1F56ACE8F65_1_105_c.jpeg",
+    "p3": "storage/uploads/demo/5FF127BE-7F10-4663-BDB2-819CD0284703_1_105_c.jpeg",
+    "p4": "storage/uploads/demo/BA26317E-F80A-47A3-8038-A18C31DCE540_1_105_c.jpeg",
+    "p5": "storage/uploads/demo/BB576DE0-CC00-4675-BB8A-BD75136FE32E_1_105_c.jpeg",
+    "p6": "storage/uploads/demo/C1301D42-9510-4765-95E5-7C093048A031_1_105_c.jpeg"
+  }
+}

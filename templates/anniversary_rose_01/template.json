@@ -1,0 +1,674 @@
+{
+  "id": "anniversary_rose_01",
+  "name": "기념일 로즈",
+  "category": "기념일",
+  "version": "1.0.0",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "fps": 30,
+  "bgm": {
+    "procedural": "warm_pad",
+    "gain_db": -16,
+    "fade_in": 1.8,
+    "fade_out": 2.8,
+    "license": "PLACEHOLDER - 판매 전 상업 라이선스 음원으로 교체 필수"
+  },
+  "inputs": [
+    {
+      "id": "name_a",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "이름 1",
+      "default": "지훈"
+    },
+    {
+      "id": "name_b",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "이름 2",
+      "default": "서연"
+    },
+    {
+      "id": "count",
+      "type": "text",
+      "required": false,
+      "max_len": 14,
+      "guide": "몇 번째 기념일",
+      "default": "1000"
+    },
+    {
+      "id": "unit",
+      "type": "text",
+      "required": false,
+      "max_len": 10,
+      "guide": "단위",
+      "default": "일"
+    },
+    {
+      "id": "since",
+      "type": "text",
+      "required": false,
+      "max_len": 26,
+      "guide": "시작한 날",
+      "default": "since 2023. 12. 02"
+    },
+    {
+      "id": "line1",
+      "type": "text",
+      "required": false,
+      "max_len": 30,
+      "guide": "문구 1",
+      "default": "평범한 하루가"
+    },
+    {
+      "id": "line2",
+      "type": "text",
+      "required": false,
+      "max_len": 30,
+      "guide": "문구 2",
+      "default": "너와 있으면 특별해져"
+    },
+    {
+      "id": "line3",
+      "type": "text",
+      "required": false,
+      "max_len": 56,
+      "guide": "마지막 문구",
+      "default": "다음 계절도\n그 다음 계절도 함께"
+    },
+    {
+      "id": "p1",
+      "type": "image",
+      "required": true,
+      "guide": "오프닝"
+    },
+    {
+      "id": "p2",
+      "type": "image",
+      "required": true,
+      "guide": "폴라로이드 1"
+    },
+    {
+      "id": "p3",
+      "type": "image",
+      "required": true,
+      "guide": "폴라로이드 2"
+    },
+    {
+      "id": "p4",
+      "type": "image",
+      "required": true,
+      "guide": "폴라로이드 3"
+    },
+    {
+      "id": "p5",
+      "type": "image",
+      "required": true,
+      "guide": "본문 사진"
+    },
+    {
+      "id": "p6",
+      "type": "image",
+      "required": true,
+      "guide": "엔딩 사진"
+    }
+  ],
+  "styles": {
+    "quiet": {
+      "font": "Pretendard-Regular.otf",
+      "size": 38,
+      "color": "#F0C8D4",
+      "letter_spacing": 13,
+      "uppercase": true,
+      "max_width": 0.86,
+      "shadow": {
+        "color": "#2A0E1A",
+        "blur": 14,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          3
+        ]
+      }
+    },
+    "count": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 230,
+      "color": "#FFFFFF",
+      "gradient": [
+        "#FFFFFF",
+        "#FFC7DC"
+      ],
+      "letter_spacing": -12,
+      "max_width": 0.94,
+      "glow": {
+        "color": "#FF6FA5",
+        "blur": 40,
+        "opacity": 0.8,
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "shadow": {
+        "color": "#2A0E1A",
+        "blur": 26,
+        "opacity": 0.5,
+        "offset": [
+          0,
+          10
+        ]
+      }
+    },
+    "soft": {
+      "font": "Pretendard-Bold.otf",
+      "size": 66,
+      "color": "#FFF4F7",
+      "letter_spacing": -1,
+      "line_height": 1.5,
+      "max_width": 0.76,
+      "shadow": {
+        "color": "#2A0E1A",
+        "blur": 22,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          6
+        ]
+      }
+    },
+    "names": {
+      "font": "Pretendard-Bold.otf",
+      "size": 88,
+      "color": "#FFFFFF",
+      "gradient": [
+        "#FFFFFF",
+        "#FFD3E2"
+      ],
+      "letter_spacing": 2,
+      "max_width": 0.86,
+      "glow": {
+        "color": "#FF6FA5",
+        "blur": 26,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "shadow": {
+        "color": "#2A0E1A",
+        "blur": 20,
+        "opacity": 0.5,
+        "offset": [
+          0,
+          6
+        ]
+      }
+    }
+  },
+  "scenes": [
+    {
+      "name": "open",
+      "dur": 4.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p1}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.28
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{since}}",
+          "style": "quiet",
+          "pos": [
+            "center",
+            0.4
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.6,
+            "dur": 1.2
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{name_a}}  &  {{name_b}}",
+          "style": "names",
+          "pos": [
+            "center",
+            0.5
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.1,
+            "dur": 1.2,
+            "distance": 36
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "count",
+      "dur": 4.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p5}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.1,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 34,
+            "opacity": 0.28
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{count}}",
+          "style": "count",
+          "pos": [
+            "center",
+            0.45
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.3,
+            "dur": 1.0,
+            "distance": 54
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{unit}}째 되는 날",
+          "style": "soft",
+          "pos": [
+            "center",
+            0.62
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 1.1,
+            "dur": 0.9
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "polaroid",
+      "dur": 5.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p2}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.07
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.4
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p2}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.105,
+            0.105,
+            0.46,
+            0.255
+          ],
+          "radius": 6,
+          "border_width": 22,
+          "border_color": "#FFF8FA",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          },
+          "frame_ar": 1.0,
+          "landscape": {
+            "frame": [
+              0.115,
+              0.2,
+              0.22,
+              0.22
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p3}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.435,
+            0.372,
+            0.46,
+            0.255
+          ],
+          "radius": 6,
+          "border_width": 22,
+          "border_color": "#FFF8FA",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.08,
+              1.0
+            ]
+          },
+          "frame_ar": 1.0,
+          "landscape": {
+            "frame": [
+              0.39,
+              0.3,
+              0.22,
+              0.22
+            ]
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{p4}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "frame": [
+            0.105,
+            0.639,
+            0.46,
+            0.255
+          ],
+          "radius": 6,
+          "border_width": 22,
+          "border_color": "#FFF8FA",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ]
+          },
+          "frame_ar": 1.0,
+          "landscape": {
+            "frame": [
+              0.665,
+              0.2,
+              0.22,
+              0.22
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "our days",
+          "style": "quiet",
+          "pos": [
+            "center",
+            0.055
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.5,
+            "dur": 1.0
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.085
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadewhite",
+        "dur": 0.6
+      }
+    },
+    {
+      "name": "line1",
+      "dur": 3.8,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p5}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "headroom": 0.34,
+          "motion": {
+            "kind": "pan",
+            "zoom": [
+              1.1,
+              1.1
+            ],
+            "direction": "left"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.46,
+            "strength": 0.6
+          },
+          "landscape": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.3,
+              "strength": 0.72
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{line1}}",
+          "style": "soft",
+          "pos": [
+            "center",
+            0.82
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.4,
+            "dur": 0.9,
+            "distance": 38
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.875
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothright",
+        "dur": 0.6
+      }
+    },
+    {
+      "name": "line2",
+      "dur": 3.8,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p3}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "headroom": 0.36,
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.14,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "top",
+            "size": 0.44,
+            "strength": 0.58
+          },
+          "landscape": {
+            "params": {
+              "shape": "top",
+              "size": 0.3,
+              "strength": 0.7
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{line2}}",
+          "style": "soft",
+          "pos": [
+            "center",
+            0.17
+          ],
+          "anim": {
+            "kind": "fade_down",
+            "at": 0.4,
+            "dur": 0.9,
+            "distance": 38
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.125
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "closing",
+      "dur": 5.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{p6}}",
+          "fit": "blur",
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.09
+            ]
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 32,
+            "opacity": 0.3
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "center",
+            "size": 0.66,
+            "center": 0.48,
+            "strength": 0.3
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{line3}}",
+          "style": "soft",
+          "pos": [
+            "center",
+            0.44
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.6,
+            "dur": 1.2,
+            "distance": 46
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{name_a}}  ♥  {{name_b}}",
+          "style": "quiet",
+          "pos": [
+            "center",
+            0.6
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 1.8,
+            "dur": 1.0
+          }
+        }
+      ]
+    }
+  ],
+  "design": [
+    1080,
+    1920
+  ]
+}

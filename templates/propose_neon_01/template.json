@@ -1,0 +1,847 @@
+{
+  "id": "propose_neon_01",
+  "name": "네온 프로포즈",
+  "category": "프로포즈",
+  "version": "1.0.0",
+  "aspect": "9:16",
+  "resolution": [
+    1080,
+    1920
+  ],
+  "fps": 30,
+  "bgm": {
+    "procedural": "neon_pulse",
+    "gain_db": -14,
+    "fade_in": 1.2,
+    "fade_out": 2.5,
+    "license": "PLACEHOLDER - 판매 전 상업 라이선스 음원으로 교체 필수"
+  },
+  "inputs": [
+    {
+      "id": "name_a",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "보내는 사람 이름",
+      "default": "지훈"
+    },
+    {
+      "id": "name_b",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "받는 사람 이름",
+      "default": "서연"
+    },
+    {
+      "id": "first_date",
+      "type": "text",
+      "required": false,
+      "max_len": 24,
+      "guide": "처음 만난 날",
+      "default": "2021. 04. 17"
+    },
+    {
+      "id": "msg1",
+      "type": "text",
+      "required": false,
+      "max_len": 34,
+      "guide": "중간 문구 1",
+      "default": "너를 만난 그날부터"
+    },
+    {
+      "id": "msg2",
+      "type": "text",
+      "required": false,
+      "max_len": 34,
+      "guide": "중간 문구 2",
+      "default": "매일이 특별해졌어"
+    },
+    {
+      "id": "msg3",
+      "type": "text",
+      "required": false,
+      "max_len": 60,
+      "guide": "클라이맥스 문구",
+      "default": "앞으로의 모든 계절을\n너와 함께 걷고 싶어"
+    },
+    {
+      "id": "closing",
+      "type": "text",
+      "required": false,
+      "max_len": 30,
+      "guide": "마지막 한 줄",
+      "default": "나와 결혼해 줄래?"
+    },
+    {
+      "id": "sign",
+      "type": "text",
+      "required": false,
+      "max_len": 30,
+      "guide": "엔딩 서명",
+      "default": "2026. 09. 12  ·  남산 서울타워"
+    },
+    {
+      "id": "photo1",
+      "type": "image",
+      "required": true,
+      "guide": "오프닝 사진"
+    },
+    {
+      "id": "photo2",
+      "type": "image",
+      "required": true,
+      "guide": "처음 만난 날 사진"
+    },
+    {
+      "id": "photo3",
+      "type": "image",
+      "required": true,
+      "guide": "함께한 사진"
+    },
+    {
+      "id": "photo4",
+      "type": "image",
+      "required": true,
+      "guide": "함께한 사진"
+    },
+    {
+      "id": "photo5",
+      "type": "image",
+      "required": true,
+      "guide": "함께한 사진"
+    },
+    {
+      "id": "photo6",
+      "type": "image",
+      "required": true,
+      "guide": "가장 마음에 드는 사진"
+    },
+    {
+      "id": "clip1",
+      "type": "video",
+      "required": false,
+      "max_sec": 5,
+      "guide": "짧은 영상(선택)"
+    }
+  ],
+  "styles": {
+    "kicker": {
+      "font": "Pretendard-Bold.otf",
+      "size": 42,
+      "color": "#DDF6FF",
+      "letter_spacing": 9,
+      "uppercase": true,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 16,
+        "opacity": 0.75,
+        "offset": [
+          0,
+          3
+        ]
+      }
+    },
+    "title_neon": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 118,
+      "color": "#FFFFFF",
+      "gradient": [
+        "#FFFFFF",
+        "#FFD7EE"
+      ],
+      "letter_spacing": -4,
+      "line_height": 1.18,
+      "stroke": {
+        "color": "#59E7FF",
+        "width": 2
+      },
+      "glow": {
+        "color": "#FF3DAE",
+        "blur": 34,
+        "opacity": 1.0,
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "shadow": {
+        "color": "#000000",
+        "blur": 22,
+        "opacity": 0.45,
+        "offset": [
+          0,
+          8
+        ]
+      }
+    },
+    "big": {
+      "font": "Pretendard-ExtraBold.otf",
+      "size": 92,
+      "color": "#FFFFFF",
+      "letter_spacing": -3,
+      "line_height": 1.28,
+      "max_width": 0.8,
+      "glow": {
+        "color": "#7B5CFF",
+        "blur": 30,
+        "opacity": 0.85,
+        "offset": [
+          0,
+          0
+        ]
+      },
+      "shadow": {
+        "color": "#000000",
+        "blur": 24,
+        "opacity": 0.6,
+        "offset": [
+          0,
+          8
+        ]
+      }
+    },
+    "body": {
+      "font": "Pretendard-Bold.otf",
+      "size": 62,
+      "color": "#FFFFFF",
+      "letter_spacing": -1.5,
+      "line_height": 1.42,
+      "max_width": 0.78,
+      "shadow": {
+        "color": "#000000",
+        "blur": 20,
+        "opacity": 0.7,
+        "offset": [
+          0,
+          6
+        ]
+      }
+    },
+    "date": {
+      "font": "Pretendard-Regular.otf",
+      "size": 48,
+      "color": "#FFFFFF",
+      "letter_spacing": 6,
+      "max_width": 0.8,
+      "shadow": {
+        "color": "#000000",
+        "blur": 14,
+        "opacity": 0.6,
+        "offset": [
+          0,
+          4
+        ]
+      }
+    },
+    "sign": {
+      "font": "Pretendard-Regular.otf",
+      "size": 40,
+      "color": "#C9C4FF",
+      "letter_spacing": 5,
+      "max_width": 0.86,
+      "shadow": {
+        "color": "#000000",
+        "blur": 12,
+        "opacity": 0.6,
+        "offset": [
+          0,
+          3
+        ]
+      }
+    }
+  },
+  "scenes": [
+    {
+      "name": "opening",
+      "dur": 4.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo1}}",
+          "fit": "cover",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.14
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 3.6
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 30,
+            "opacity": 0.22
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 6
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "center",
+            "size": 0.52,
+            "center": 0.46,
+            "strength": 0.58,
+            "feather": 1.4
+          }
+        },
+        {
+          "type": "text",
+          "content": "TO. {{name_b}}",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.4
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.5,
+            "dur": 1.0,
+            "distance": 0
+          }
+        },
+        {
+          "type": "text",
+          "content": "우리의 이야기",
+          "style": "big",
+          "pos": [
+            "center",
+            0.49
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.9,
+            "dur": 1.0,
+            "distance": 54
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "first-meet",
+      "dur": 3.6,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo2}}",
+          "fit": "cover",
+          "grade": "filmic",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.15,
+              1.0
+            ],
+            "anchor": "top"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 4.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 7
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.5,
+            "strength": 0.76,
+            "feather": 1.5
+          },
+          "landscape": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.34,
+              "strength": 0.8
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "처음 만난 날",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.72
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.35,
+            "dur": 0.7
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.775
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{first_date}}",
+          "style": "date",
+          "pos": [
+            "center",
+            0.78
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.6,
+            "dur": 0.8,
+            "distance": 34
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.875
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothleft",
+        "dur": 0.6
+      }
+    },
+    {
+      "name": "msg1",
+      "dur": 3.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo3}}",
+          "fit": "cover",
+          "grade": "wedding",
+          "motion": {
+            "kind": "pan",
+            "zoom": [
+              1.1,
+              1.1
+            ],
+            "direction": "right"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 4.2
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "bottom",
+            "size": 0.52,
+            "strength": 0.64,
+            "feather": 1.5
+          },
+          "landscape": {
+            "params": {
+              "shape": "bottom",
+              "size": 0.32,
+              "strength": 0.68
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg1}}",
+          "style": "body",
+          "pos": [
+            "center",
+            0.8
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.3,
+            "dur": 0.8,
+            "distance": 40
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.875
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.5
+      }
+    },
+    {
+      "name": "clip",
+      "dur": 4.0,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{clip1}}",
+          "fit": "cover",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "letterbox",
+          "params": {
+            "ratio": 0.05
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 5
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadewhite",
+        "dur": 0.45
+      }
+    },
+    {
+      "name": "msg2",
+      "dur": 3.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo4}}",
+          "fit": "cover",
+          "grade": "warm",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.16,
+              1.02
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 4.2
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "top",
+            "size": 0.5,
+            "strength": 0.62,
+            "feather": 1.5
+          },
+          "landscape": {
+            "params": {
+              "shape": "top",
+              "size": 0.32,
+              "strength": 0.66
+            }
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg2}}",
+          "style": "body",
+          "pos": [
+            "center",
+            0.2
+          ],
+          "anim": {
+            "kind": "fade_down",
+            "at": 0.3,
+            "dur": 0.8,
+            "distance": 40
+          },
+          "landscape": {
+            "pos": [
+              "center",
+              0.145
+            ]
+          }
+        }
+      ],
+      "transition": {
+        "name": "circleopen",
+        "dur": 0.6
+      }
+    },
+    {
+      "name": "gallery",
+      "dur": 3.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo5}}",
+          "fit": "cover",
+          "grade": "filmic",
+          "motion": {
+            "kind": "pan",
+            "zoom": [
+              1.12,
+              1.12
+            ],
+            "direction": "left"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 4.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 7
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "climax",
+      "dur": 5.2,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo6}}",
+          "fit": "blur",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.1
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 40,
+            "opacity": 0.3
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "center",
+            "size": 0.6,
+            "center": 0.47,
+            "strength": 0.34,
+            "feather": 1.3
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg3}}",
+          "style": "big",
+          "pos": [
+            "center",
+            0.47
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.6,
+            "dur": 1.1,
+            "distance": 60
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "proposal",
+      "dur": 5.4,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo6}}",
+          "fit": "cover",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.24,
+              1.02
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "vignette",
+          "params": {
+            "angle_div": 3.4
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "flash",
+          "params": {
+            "at": 0.05,
+            "dur": 0.35,
+            "amount": 0.8
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "bloom",
+          "params": {
+            "sigma": 26,
+            "opacity": 0.24
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "center",
+            "size": 0.62,
+            "center": 0.5,
+            "strength": 0.56,
+            "feather": 1.3
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{name_a}}  ♥  {{name_b}}",
+          "style": "title_neon",
+          "pos": [
+            "center",
+            0.44
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.5,
+            "dur": 1.0,
+            "distance": 46
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{closing}}",
+          "style": "body",
+          "pos": [
+            "center",
+            0.58
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.6,
+            "dur": 0.9,
+            "distance": 36
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "outro",
+      "dur": 3.8,
+      "layers": [
+        {
+          "type": "media",
+          "src": "{{photo1}}",
+          "fit": "blur",
+          "grade": "neon",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.06,
+              1.0
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "scrim",
+          "params": {
+            "shape": "full",
+            "strength": 0.38
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{sign}}",
+          "style": "sign",
+          "pos": [
+            "center",
+            0.5
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.2
+          }
+        }
+      ]
+    }
+  ],
+  "design": [
+    1080,
+    1920
+  ]
+}
