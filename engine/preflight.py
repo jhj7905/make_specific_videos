@@ -22,7 +22,7 @@ from engine import media, face
 from engine.cache import SLOT
 from engine.scene import _substitute
 from engine.spec import Template, Job, MediaLayer, TextLayer
-from engine.text import FontChain, scaled_style, _wrap
+from engine.text import FontChain, scaled_style, _wrap, font_missing
 
 # 임계값 — 실사용하며 조정할 자리
 UPSCALE_WARN = 1.30      # 이 배율을 넘겨 확대하면 눈에 띄게 흐려진다
@@ -146,6 +146,20 @@ def _check_media(slot: str, path: str, targets: list[dict],
                 "인물 사진이라면 크롭 위치를 한 번 확인하세요"))
 
 
+def _check_fonts(tpl: Template, out: list[Finding]) -> None:
+    """템플릿이 지정한 폰트가 서버에 깔려 있는지.
+
+    없어도 Pretendard 로 렌더는 되지만 글꼴이 바뀌면 상품이 달라진다.
+    손글씨 템플릿이 고딕으로 나가는 사고를 여기서 잡는다.
+    """
+    used = {st.font for st in tpl.styles.values()}
+    for f in sorted(used):
+        if font_missing(f):
+            out.append(Finding(
+                "warn", "font", f"폰트가 없습니다: {f} → Pretendard 로 대체됩니다",
+                "./setup.sh 를 실행하거나 assets/fonts/ 에 넣으세요"))
+
+
 def _check_texts(tpl: Template, resolved: dict[str, str],
                  out: list[Finding]) -> None:
     W, H = tpl.width, tpl.height
@@ -266,6 +280,7 @@ def run(tpl: Template, job: Job, *, sale: bool = False,
         if val and Path(val).exists():
             _check_media(slot, val, ts, out, do_face)
 
+    _check_fonts(tpl, out)
     _check_texts(tpl, resolved, out)
     _check_pruning(tpl, resolved, out)
     out.sort(key=lambda f: (-RANK[f.level], f.where))

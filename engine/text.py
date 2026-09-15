@@ -69,13 +69,18 @@ class FontChain:
     """주 폰트에 없는 글리프(♥, 이모지 등)는 폴백 폰트로 그린다."""
 
     def __init__(self, primary: str, size: int):
+        # 주 폰트는 없으면 Pretendard 로 떨어뜨리고 경고한다(렌더는 계속).
+        # 폴백은 '있으면 쓰고 없으면 건너뛴다' 가 원래 의도이므로 required=True
+        # 로 예외를 받아 조용히 건너뛴다 — 여기서 경고를 내면 템플릿 폰트가
+        # 없는 것처럼 보여서 진짜 경고가 묻힌다.
         paths = [str(_font_path(primary))]
         for fb in FALLBACKS:
             try:
-                paths.append(str(_font_path(fb)))
+                fp = str(_font_path(fb, required=True))
             except FileNotFoundError:
-                if Path(fb).exists():
-                    paths.append(fb)
+                fp = fb if Path(fb).exists() else None
+            if fp and fp not in paths:
+                paths.append(fp)
         self.paths = paths
         self.size = size
         self.fonts = [_load(p, size) for p in paths]
