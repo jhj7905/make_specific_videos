@@ -68,6 +68,7 @@ class MediaLayer(BaseModel):
     fit_shift: tuple[float, float] = (0.0, 0.0)
     headroom: float = 0.40                      # 얼굴을 창의 세로 몇 % 지점에 둘지
     use_face: bool = True                       # False 면 엣지에너지 크롭
+    avoid_text: bool = True                     # 같은 씬 텍스트 아래로 얼굴이 들어가지 않게
     # 콜라주/폴라로이드: 캔버스 대비 정규화 좌표 [x, y, w, h]. None 이면 전체화면
     frame: tuple[float, float, float, float] | None = None
     # 타일의 가로세로비(w/h)를 고정하면 캔버스 비율이 바뀌어도 타일이 찌그러지지 않는다

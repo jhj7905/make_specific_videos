@@ -238,6 +238,26 @@ def render_text_png(content: str, style: TextStyle, canvas: tuple[int, int],
     return out
 
 
+def block_bounds(content: str, style: TextStyle, canvas: tuple[int, int],
+                 pos, scale: float = 1.0) -> tuple[float, float] | None:
+    """텍스트 블록이 차지하는 세로 구간을 정규화 좌표 (y0, y1) 로.
+
+    렌더와 완전히 같은 폰트·자간·줄바꿈으로 계산하므로 실측값이다.
+    크롭이 얼굴을 어디에 둘지 정할 때와 preflight 넘침 검사에서 함께 쓴다.
+    """
+    if not content.strip():
+        return None
+    st = scaled_style(style, scale)
+    if st.uppercase:
+        content = content.upper()
+    W, H = canvas
+    chain = FontChain(st.font, st.size)
+    lines = _wrap(chain, content, st.letter_spacing, W * st.max_width)
+    block_h = st.size * st.line_height * len(lines)
+    cy = float(pos[1]) * H
+    return ((cy - block_h / 2) / H, (cy + block_h / 2) / H)
+
+
 def cache_key(*parts) -> str:
     return hashlib.md5("|".join(str(p) for p in parts).encode()).hexdigest()[:12]
 

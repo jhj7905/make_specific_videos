@@ -158,12 +158,43 @@ Pillow 로 전체 캔버스 RGBA PNG 를 만들고 ffmpeg 은 `overlay` 만 시�
 | `media.fit` | `cover`(스마트크롭) · `contain` · `blurpad` · `blur`(배경흐림) |
 | `media.motion.kind` | `kenburns` · `pan` · `none` |
 | `media.grade` | `warm` · `cool` · `filmic` · `neon` · `wedding` · `none` |
+| `media.avoid_text` | 같은 씬의 텍스트 아래로 얼굴이 들어가지 않게 (기본 true) |
 | `fx.kind` | `scrim` · `vignette` · `grain` · `bloom` · `letterbox` · `flash` |
 | `text.anim.kind` | `fade` · `fade_up` · `fade_down` · `slide_left` · `slide_right` |
 | `transition.name` | ffmpeg xfade 전부 (`fadeblack` `dissolve` `smoothleft` `circleopen` `zoomin` …) |
 | `media.frame` | 콜라주/폴라로이드 타일 `[x,y,w,h]` (정규화) + `frame_ar` `radius` `border_width` |
 | 텍스트 스타일 | 폰트·크기·자간·행간·세로 그라데이션·외곽선·그림자·네온글로우 |
 | 방향 오버라이드 | 모든 레이어/씬에 `landscape` · `portrait` 블록 |
+
+### 그레이딩 — 클리핑 없는 톤 곡선
+
+선형 대비·색온도는 밝은 픽셀을 1.0 위로 밀어내고, 거기서 clip 하면 하늘·노을·
+전구가 흰 덩어리로 뭉친다. 그게 '폰으로 찍은 티' 의 정체다. 프로포즈 영상은
+역광과 조명이 많아 특히 자주 걸린다.
+
+- **S커브**: smoothstep 을 섞어 중간톤 기울기만 올린다. 양 끝은 완만해져 안 잘린다.
+- **하이라이트 롤오프**: knee 위를 1.0 에 점근시킨다. ⚠️ 채널별로 누르면 R/G/B 가
+  서로 끌려가 하이라이트 채도가 빠진다 — 채널 최댓값 기준으로 눌러 비율을 보존한다.
+- **스플릿 토닝**: 그림자와 하이라이트에 다른 색을 얹는다. 전체를 한 방향으로
+  미는 것보다 '보정한 티' 가 제대로 난다.
+- 영상 소재는 `grade_vf()` 가 `eq` + `colorbalance` 로 근사한다. 한 영상 안에서
+  사진 씬과 영상 씬의 톤이 따로 노는 게 가장 티나는 아마추어 신호다.
+
+실측 (합성 테스트 사진 3장 × 프리셋 4종): 완전포화 화소 **8.35% → 0%**,
+채도·대비는 동등 이상.
+
+### 글자가 얼굴을 덮지 않게 한다
+
+템플릿은 텍스트를 고정 좌표에 두고, 얼굴 크롭은 얼굴을 화면 위쪽 40% 에 둔다.
+둘이 구조적으로 같은 자리를 노리기 때문에 인물 사진에서 글자가 얼굴을 덮는다.
+상용 템플릿이 절대 하지 않는 실수다.
+
+씬의 텍스트 블록이 차지하는 세로 띠를 렌더와 같은 폰트·줄바꿈으로 실측해
+(`text.block_bounds`) 얼굴이 그 아래로 들어가지 않는 `headroom` 을 고른다.
+
+3:4 휴대폰 사진을 9:16 으로 자르면 가로만 잘리고 세로 여유가 0 이라 위치를
+바꿀 자유도가 아예 없다. 그때는 창을 최대 24% 좁혀 여유를 만든다 — 약간
+타이트해지는 대신 글자가 얼굴을 덮지 않는다. `avoid_text: false` 로 끌 수 있다.
 
 ### ⚠️ 반드시 지킬 것: 텍스트 뒤에는 `scrim` 을 깐다
 고객 사진이 밝으면 흰 글씨가 그냥 사라진다. 상용 템플릿이 항상 쓰는 장치다.

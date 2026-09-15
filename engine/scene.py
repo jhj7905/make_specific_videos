@@ -11,7 +11,8 @@ import config
 from engine import ffmpeg, media, atomic
 from engine.spec import Template, Scene, MediaLayer, FxLayer, TextLayer
 from engine.text import (render_text_png, render_scrim_png, render_round_mask,
-                         render_frame_shadow, render_frame_border, cache_key)
+                         render_frame_shadow, render_frame_border, cache_key,
+                         block_bounds)
 
 
 def _kenburns(m, frames: int, fps: int, W: int, H: int) -> str:
@@ -107,6 +108,22 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
     filters: list[str] = []
     n = 0
 
+    # 이 씬의 텍스트가 차지하는 세로 띠 — 얼굴이 그 아래로 들어가지 않게 한다
+    text_bands: list[tuple[float, float]] = []
+    for l in scene.layers:
+        if not isinstance(l, TextLayer):
+            continue
+        content = _substitute(l.content, resolved)
+        if l.skip_if_empty and not content.strip():
+            continue
+        try:
+            b = block_bounds(content, tpl.style(l.style), (W, H), l.pos, k)
+        except KeyError:
+            continue
+        if b:
+            text_bands.append(b)
+    bands = tuple(sorted(text_bands))
+
     base_label = None
     media_layers = [l for l in scene.layers if isinstance(l, MediaLayer)]
     full = [l for l in media_layers if not l.frame]
@@ -125,7 +142,8 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         if media.kind_of(src) == "image":
             prepared = media.prepare_image(Path(src), work, (W, H), ml.fit, ml.grade,
                                            headroom=ml.headroom, use_face=ml.use_face,
-                                           fit_margin=ml.fit_margin, fit_shift=ml.fit_shift)
+                                           fit_margin=ml.fit_margin, fit_shift=ml.fit_shift,
+                                           avoid=bands if ml.avoid_text else ())
             inputs += ["-loop", "1", "-i", str(prepared)]
             chain = _kenburns(ml.motion, frames, fps, W, H)
         else:
@@ -170,7 +188,7 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         if media.kind_of(src) == "image":
             prepared = media.prepare_image(Path(src), work, (pw, ph), ml.fit, ml.grade,
                                            supersample=2, headroom=ml.headroom,
-                                           use_face=ml.use_face)
+                                           use_face=ml.use_face)   # 타일은 작아서 회피 불필요
             inputs += ["-loop", "1", "-i", str(prepared)]
             chain = _kenburns(ml.motion, frames, fps, pw, ph)
         else:
