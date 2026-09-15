@@ -74,6 +74,7 @@ def _prepared(job: Job, aspect: str | None):
     tpl = load_template(job.template)
     want = aspect or job.aspect
     if want:
+        tpl.check_aspect(want)
         tpl = tpl.for_size(parse_size(want))
     return tpl
 

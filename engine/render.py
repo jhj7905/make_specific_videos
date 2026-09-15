@@ -164,6 +164,7 @@ def render_job(job: Job, *, out_dir: Path | None = None, keep_work: bool = True,
     tpl = load_template(job.template)
     want = aspect or job.aspect
     if want:
+        tpl.check_aspect(want)
         tpl = tpl.for_size(parse_size(want))
     resolved = resolve_inputs(tpl, job)
     tpl = prune_template(tpl, resolved)

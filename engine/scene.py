@@ -12,7 +12,11 @@ from engine import ffmpeg, media, atomic
 from engine.spec import Template, Scene, MediaLayer, FxLayer, TextLayer
 from engine.text import (render_text_png, render_scrim_png, render_round_mask,
                          render_frame_shadow, render_frame_border, cache_key,
-                         block_bounds)
+                         block_bounds, render_paper_png, render_lightleak_png,
+                         render_doodle_png, render_tile_png, rot_size)
+
+# 자체 PNG 를 만들어 overlay 하는 fx (필터 체인으로 표현할 수 없는 것들)
+PNG_FX = {"scrim", "lightleak", "doodle"}
 
 
 def _kenburns(m, frames: int, fps: int, W: int, H: int) -> str:
@@ -132,10 +136,24 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
     def _even(v: float) -> int:
         return max(2, int(round(v / 2) * 2))
 
-    # 1) 전체화면 미디어 (없으면 검정 배경)
+    # 1) 배경 — 종이(paper) fx 가 있으면 그것이 base 다.
+    #    스크랩북 스타일은 배경이 사진이 아니라 종이다. fx 루프는 미디어보다
+    #    뒤에 돌기 때문에 거기서 그리면 사진을 덮어버린다.
+    paper = next((l for l in scene.layers
+                  if isinstance(l, FxLayer) and l.kind == "paper"), None)
     if not full:
-        inputs += ["-f", "lavfi", "-i", f"color=c=black:s={W}x{H}:r={fps}"]
-        base_label = f"{n}:v"
+        if paper is not None:
+            key = cache_key("paper", sorted(paper.params.items()), W, H)
+            pp = work / f"paper_{key}.png"
+            with atomic.produce(pp) as tmp:
+                if tmp:
+                    render_paper_png((W, H), paper.params, tmp)
+            inputs += ["-loop", "1", "-i", str(pp)]
+            filters.append(f"[{n}:v]scale={W}:{H},setsar=1,fps={fps}[paper]")
+            base_label = "paper"
+        else:
+            inputs += ["-f", "lavfi", "-i", f"color=c=black:s={W}x{H}:r={fps}"]
+            base_label = f"{n}:v"
         n += 1
     for i, ml in enumerate(full):
         src = _resolve_src(tpl, ml.src, resolved)
@@ -161,29 +179,63 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         n += 1
 
     # 2) 프레임 미디어 (콜라주 / 폴라로이드)
+    #
+    #    mat 이나 rotate 가 있으면 '타일 캔버스' 경로를 탄다. 인화지+그림자를
+    #    Pillow 로 미리 기울여 굽고, 사진 스트림은 같은 캔버스에서 ffmpeg 의
+    #    rotate 로 돌린다. 둘 다 캔버스 중심 기준이라 정확히 겹친다.
+    #    둘 다 0 이면 기존 경로를 그대로 써서 기존 템플릿이 1픽셀도 안 바뀐다.
     for i, ml in enumerate(framed):
-        fx, fy, fw, fh = ml.frame
-        px, py = int(round(fx * W)), int(round(fy * H))
-        pw = _even(fw * W)
-        # frame_ar 을 주면 캔버스 비율이 바뀌어도 타일 모양이 유지된다
-        ph = _even(pw / ml.frame_ar) if ml.frame_ar else _even(fh * H)
+        fxn, fyn, fwn, fhn = ml.frame
+        fw = _even(fwn * W)
+        fh = _even(fw / ml.frame_ar) if ml.frame_ar else _even(fhn * H)
+        px, py = int(round(fxn * W)), int(round(fyn * H))
         radius = ml.radius * k
         border_w = ml.border_width * k
         src = _resolve_src(tpl, ml.src, resolved)
+        tilted = ml.mat > 0 or abs(ml.rotate) > 1e-6
 
-        if ml.shadow:
-            pad = max(12, int(min(pw, ph) * 0.10))
-            key = cache_key("shadow", pw, ph, radius, pad)
-            sp = work / f"fshadow_{key}.png"
-            with atomic.produce(sp) as tmp:
+        if tilted:
+            cxp, cyp = fxn * W + fw / 2, fyn * H + fh / 2
+            m = ml.mat * min(fw, fh)
+            mat_b = m * ml.mat_bottom
+            pw = _even(fw - 2 * m)
+            ph = _even(fh - m - mat_b)
+            pad = max(14, int(min(fw, fh) * 0.09)) if ml.shadow else 0
+            rw, rh = rot_size(fw, fh, ml.rotate)
+            EW, EH = rw + 2 * pad, rh + 2 * pad
+            ox = int(round((EW - fw) / 2 + m))
+            oy = int(round((EH - fh) / 2 + m))
+            X, Y = int(round(cxp - EW / 2)), int(round(cyp - EH / 2))
+
+            key = cache_key("tile", fw, fh, m, mat_b, radius, ml.mat_color,
+                            ml.rotate, pad, EW, EH, ml.shadow)
+            tp = work / f"tile_{key}.png"
+            with atomic.produce(tp) as tmp:
                 if tmp:
-                    render_frame_shadow(pw, ph, radius, pad, pad * 0.55, 0.55, "#000000", tmp)
-            inputs += ["-loop", "1", "-i", str(sp)]
-            filters.append(f"[{n}:v]format=rgba[fs{i}]")
-            filters.append(f"[{base_label}][fs{i}]overlay={px-pad}:{py-pad}:"
-                           f"format=auto[bs{i}]")
-            base_label = f"bs{i}"
+                    render_tile_png(fw, fh, m, m, mat_b, radius, ml.mat_color,
+                                    ml.rotate, pad, max(pad * 0.5, 4.0), 0.42,
+                                    (EW, EH), tmp)
+            inputs += ["-loop", "1", "-i", str(tp)]
+            filters.append(f"[{n}:v]format=rgba[ft{i}]")
+            filters.append(f"[{base_label}][ft{i}]overlay={X}:{Y}:format=auto[bt{i}]")
+            base_label = f"bt{i}"
             n += 1
+        else:
+            pw, ph = fw, fh
+            if ml.shadow:
+                pad = max(12, int(min(pw, ph) * 0.10))
+                key = cache_key("shadow", pw, ph, radius, pad)
+                sp = work / f"fshadow_{key}.png"
+                with atomic.produce(sp) as tmp:
+                    if tmp:
+                        render_frame_shadow(pw, ph, radius, pad, pad * 0.55, 0.55,
+                                            "#000000", tmp)
+                inputs += ["-loop", "1", "-i", str(sp)]
+                filters.append(f"[{n}:v]format=rgba[fs{i}]")
+                filters.append(f"[{base_label}][fs{i}]overlay={px-pad}:{py-pad}:"
+                               f"format=auto[bs{i}]")
+                base_label = f"bs{i}"
+                n += 1
 
         if media.kind_of(src) == "image":
             prepared = media.prepare_image(Path(src), work, (pw, ph), ml.fit, ml.grade,
@@ -212,6 +264,16 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
             vlbl = f"fa{i}"
             n += 1
 
+        if tilted:
+            import math
+            rad = math.radians(ml.rotate)
+            rot = (f",rotate={rad:.6f}:c=none:ow={EW}:oh={EH}"
+                   if abs(ml.rotate) > 1e-6 else "")
+            filters.append(f"[{vlbl}]pad={EW}:{EH}:{ox}:{oy}:color=black@0{rot}[fp{i}]")
+            filters.append(f"[{base_label}][fp{i}]overlay={X}:{Y}:format=auto[fo{i}]")
+            base_label = f"fo{i}"
+            continue
+
         filters.append(f"[{base_label}][{vlbl}]overlay={px}:{py}:format=auto[fo{i}]")
         base_label = f"fo{i}"
 
@@ -229,14 +291,21 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
 
     cur = base_label
     # FX (텍스트보다 아래에 깔리는 것들 먼저)
-    for j, fx in enumerate([l for l in scene.layers if isinstance(l, FxLayer)]):
-        if fx.kind == "scrim":
-            skind = fx.params.get("shape", "bottom")
-            key = cache_key("scrim", skind, sorted(fx.params.items()), W, H)
-            png = work / f"scrim_{key}.png"
+    fx_layers = [l for l in scene.layers
+                 if isinstance(l, FxLayer) and l.kind != "paper"]   # paper 는 base
+    for j, fx in enumerate(fx_layers):
+        if fx.kind in PNG_FX:
+            key = cache_key(fx.kind, sorted(fx.params.items()), W, H)
+            png = work / f"{fx.kind}_{key}.png"
             with atomic.produce(png) as tmp:
                 if tmp:
-                    render_scrim_png(skind, fx.params, (W, H), tmp)
+                    if fx.kind == "scrim":
+                        render_scrim_png(fx.params.get("shape", "bottom"),
+                                         fx.params, (W, H), tmp)
+                    elif fx.kind == "lightleak":
+                        render_lightleak_png((W, H), fx.params, tmp)
+                    else:
+                        render_doodle_png((W, H), fx.params, tmp)
             inputs += ["-loop", "1", "-i", str(png)]
             filters.append(f"[{n}:v]format=rgba[sc{j}]")
             filters.append(f"[{cur}][sc{j}]overlay=0:0:format=auto[fx{j}]")

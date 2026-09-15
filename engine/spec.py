@@ -77,6 +77,12 @@ class MediaLayer(BaseModel):
     border_width: float = 0
     border_color: str = "#FFFFFF"
     shadow: bool = True                         # frame 일 때 드롭섀도
+    # 스크랩북/폴라로이드 —— 기울기가 이 미학의 핵심이다. 축에 정렬된 타일은
+    # 아무리 흰 테두리를 둘러도 '스크랩북' 이 아니라 '그리드' 로 읽힌다.
+    rotate: float = 0.0                         # 도 단위, + 가 시계방향
+    mat: float = 0.0        # 사진 바깥 인화지 여백 (frame 짧은 변 대비 비율)
+    mat_bottom: float = 1.0 # 아래쪽 여백 배수 (폴라로이드는 2.2~2.6)
+    mat_color: str = "#FFFFFF"
 
 
 class FxLayer(BaseModel):
@@ -84,7 +90,8 @@ class FxLayer(BaseModel):
     landscape: dict | None = None
     portrait: dict | None = None
     kind: Literal["vignette", "grain", "lightleak", "letterbox",
-                  "flash", "bloom", "gradient_wash", "scrim"]
+                  "flash", "bloom", "gradient_wash", "scrim",
+                  "paper", "doodle"]
     params: dict = Field(default_factory=dict)
 
 
@@ -150,6 +157,10 @@ class Template(BaseModel):
     category: str = ""
     version: str = "1"
     aspect: str = "9:16"
+    # 지원하는 출력 비율. 비우면 제한 없음. 좌우 분할 레이아웃처럼 방향이
+    # 바뀌면 구성이 무너지는 템플릿은 여기서 막는다 — 깨진 세로 영상이
+    # 납품되는 것보다 렌더가 안 되는 게 낫다.
+    aspects: list[str] = Field(default_factory=list)
     resolution: tuple[int, int] = (1080, 1920)
     # 이 레이아웃을 그린 기준 캔버스. 출력 해상도가 달라지면 px 값(폰트/자간/
     # 모서리/그림자)을 짧은 변 비율로 환산한다. 없으면 resolution 을 기준으로 본다.
@@ -180,6 +191,13 @@ class Template(BaseModel):
         """px 단위 값에 곱할 배율 (짧은 변 기준)."""
         dw, dh = self.design or self.resolution
         return min(self.width, self.height) / max(1, min(dw, dh))
+
+    def check_aspect(self, want: str) -> None:
+        if self.aspects and want not in self.aspects:
+            raise ValueError(
+                f"템플릿 {self.id} 는 {' / '.join(self.aspects)} 전용입니다 "
+                f"(요청: {want}). 다른 비율이 필요하면 템플릿에 방향 오버라이드를 "
+                f"추가하고 aspects 에 등록하세요.")
 
     def for_size(self, size: tuple[int, int]) -> "Template":
         """출력 해상도를 바꾸고 가로/세로 전용 오버라이드를 반영한 사본."""

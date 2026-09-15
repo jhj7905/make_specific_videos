@@ -15,14 +15,36 @@ FALLBACKS = ["Pretendard-Regular.otf",
              "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"]
 
 
-def _font_path(name: str) -> Path:
+_warned_fonts: set[str] = set()
+
+
+def font_missing(name: str) -> bool:
+    p = Path(name)
+    return not (p.is_absolute() and p.exists()) and not (config.FONTS_DIR / name).exists()
+
+
+def _font_path(name: str, required: bool = False) -> Path:
+    """없는 폰트는 예외 대신 Pretendard 로 떨어뜨린다.
+
+    템플릿이 손글씨 폰트를 지정했는데 서버에 아직 안 깔렸다고 렌더 전체가
+    죽으면 곤란하다. 모양만 달라지고 영상은 나오게 하고, 누락 사실은
+    preflight 가 WARN 으로 잡는다.
+    """
     p = Path(name)
     if p.is_absolute() and p.exists():
         return p
     cand = config.FONTS_DIR / name
     if cand.exists():
         return cand
-    raise FileNotFoundError(f"폰트 없음: {name}")
+    if required:
+        raise FileNotFoundError(f"폰트 없음: {name}")
+    if name not in _warned_fonts:
+        _warned_fonts.add(name)
+        print(f"[warn] 폰트 없음: {name} → Pretendard-Bold.otf 로 대체")
+    fallback = config.FONTS_DIR / "Pretendard-Bold.otf"
+    if not fallback.exists():
+        raise FileNotFoundError(f"폰트 없음: {name} (폴백도 없음)")
+    return fallback
 
 
 @functools.lru_cache(maxsize=32)
@@ -349,4 +371,174 @@ def render_frame_border(w: int, h: int, radius: float, width: float,
                         radius=r, outline=_hex(color), width=int(width))
     out.parent.mkdir(parents=True, exist_ok=True)
     img.save(out)
+    return out
+
+
+# ── 스크랩북 장식 ─────────────────────────────────────────────────────────
+# 이 스타일의 배경은 사진이 아니라 '종이' 다. 전체화면 사진 위에 글씨를 얹는
+# 기존 템플릿과 구성이 근본적으로 다르고, 종이·기울어진 인화지·낙서 세 가지가
+# 갖춰져야 비로소 스크랩북으로 읽힌다.
+
+def rot_size(w: float, h: float, deg: float) -> tuple[int, int]:
+    """deg 만큼 돌렸을 때 필요한 바운딩 박스 (짝수로 맞춘다)."""
+    import math
+    r = math.radians(abs(deg))
+    c, s = abs(math.cos(r)), abs(math.sin(r))
+    rw, rh = w * c + h * s, w * s + h * c
+    return (int(math.ceil(rw / 2) * 2), int(math.ceil(rh / 2) * 2))
+
+
+def render_paper_png(canvas: tuple[int, int], params: dict, out: Path) -> Path:
+    """종이 질감 배경.
+
+    에셋 이미지를 쓰지 않고 합성한다 — 판매물에 쓸 텍스처의 출처를 따로
+    관리할 필요가 없고, 해상도/비율이 바뀌어도 그대로 따라온다.
+    """
+    import numpy as np
+    W, H = canvas
+    base = _hex(params.get("color", "#F4F1EB"))[:3]
+    grain = float(params.get("grain", 1.8))      # 세로결 강도
+    fiber = float(params.get("fiber", 1.6))      # 섬유 농담
+    vig = float(params.get("vignette", 0.07))
+    warm = float(params.get("warm", 3.0))        # 위쪽을 살짝 따뜻하게
+
+    rng = np.random.default_rng(int(params.get("seed", 7)))
+    a = np.zeros((H, W, 3), np.float32) + np.array(base, np.float32)
+
+    # 세로 결 — 종이는 가로보다 세로 줄무늬가 눈에 띈다
+    if grain > 0:
+        cols = rng.normal(0, grain, W).astype(np.float32)
+        cols = np.convolve(cols, np.ones(3) / 3, mode="same")
+        a += cols[None, :, None]
+
+    # 섬유 농담 — 셀이 크면 '구름' 이 되어 종이가 아니라 얼룩으로 읽힌다.
+    # 짧은 변의 1/24 정도로 잘게 잡아야 질감으로 보인다.
+    if fiber > 0:
+        cell = max(2, min(H, W) // 24)
+        small = rng.normal(0, fiber, (max(2, H // cell), max(2, W // cell))).astype(np.float32)
+        a += np.asarray(Image.fromarray(small, "F").resize((W, H), Image.BILINEAR))[..., None]
+
+    # 위에서 아래로 아주 옅은 온도 기울기 (완전 균일한 면은 인쇄물처럼 보인다)
+    if warm:
+        t = np.linspace(1.0, 0.0, H, dtype=np.float32)[:, None, None]
+        a += t * np.array([warm, warm * 0.55, -warm * 0.35], np.float32)
+
+    a += rng.normal(0, 0.7, (H, W, 1)).astype(np.float32)     # 미세 입자
+
+    if vig > 0:
+        yy = np.linspace(-1, 1, H, dtype=np.float32)[:, None]
+        xx = np.linspace(-1, 1, W, dtype=np.float32)[None, :]
+        d = np.sqrt(xx ** 2 + yy ** 2) / 1.414
+        a *= (1 - vig * np.clip(d - 0.25, 0, 1)[..., None])
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    Image.fromarray(np.clip(a, 0, 255).astype(np.uint8), "RGB").save(out)
+    return out
+
+
+def render_lightleak_png(canvas: tuple[int, int], params: dict, out: Path) -> Path:
+    """구석에서 번지는 부드러운 빛. 종이 배경을 밋밋하지 않게 한다."""
+    import numpy as np
+    W, H = canvas
+    cx = float(params.get("x", 0.12)) * W
+    cy = float(params.get("y", 0.10)) * H
+    radius = float(params.get("radius", 0.42)) * max(W, H)
+    strength = float(params.get("strength", 0.55))
+    color = _hex(params.get("color", "#FFFFFF"))[:3]
+
+    yy = np.arange(H, dtype=np.float32)[:, None]
+    xx = np.arange(W, dtype=np.float32)[None, :]
+    d = np.sqrt((xx - cx) ** 2 + (yy - cy) ** 2) / max(radius, 1.0)
+    alpha = np.clip(1.0 - d, 0, 1) ** 2.2 * strength
+
+    img = np.zeros((H, W, 4), np.uint8)
+    img[..., 0], img[..., 1], img[..., 2] = color
+    img[..., 3] = (alpha * 255).astype(np.uint8)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    Image.fromarray(img, "RGBA").save(out)
+    return out
+
+
+def _heart_points(n: int = 240):
+    import math
+    for i in range(n + 1):
+        t = 2 * math.pi * i / n
+        yield (16 * math.sin(t) ** 3,
+               -(13 * math.cos(t) - 5 * math.cos(2 * t)
+                 - 2 * math.cos(3 * t) - math.cos(4 * t)))
+
+
+def render_doodle_png(canvas: tuple[int, int], params: dict, out: Path) -> Path:
+    """손그림 장식 — 하트 윤곽선, 밑줄 곡선, 동그라미."""
+    import math
+    W, H = canvas
+    kind = params.get("shape", "heart")
+    cx = float(params.get("x", 0.5)) * W
+    cy = float(params.get("y", 0.5)) * H
+    size = float(params.get("size", 0.12)) * min(W, H)
+    width = max(1, int(round(float(params.get("width", 2.0)) * min(W, H) / 1080)))
+    col = _hex(params.get("color", "#B9B2A6"), int(255 * float(params.get("opacity", 0.75))))
+
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+
+    if kind == "heart":
+        pts = [(cx + x * size / 17, cy + y * size / 17) for x, y in _heart_points()]
+        d.line(pts, fill=col, width=width, joint="curve")
+    elif kind == "swirl":
+        pts = []
+        for i in range(181):
+            t = i / 180
+            ang = t * math.pi * 2.2
+            r = size * (0.12 + 0.55 * t)
+            pts.append((cx + math.cos(ang) * r * 1.7, cy + math.sin(ang) * r * 0.55))
+        d.line(pts, fill=col, width=width, joint="curve")
+    elif kind == "circle":
+        d.ellipse([cx - size, cy - size * 0.62, cx + size, cy + size * 0.62],
+                  outline=col, width=width)
+    elif kind == "underline":
+        pts = [(cx - size + 2 * size * i / 60,
+                cy + math.sin(i / 60 * math.pi) * size * 0.14)
+               for i in range(61)]
+        d.line(pts, fill=col, width=width, joint="curve")
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out)
+    return out
+
+
+def render_tile_png(fw: int, fh: int, mat_l: float, mat_t: float, mat_b: float,
+                    radius: float, color: str, deg: float,
+                    pad: int, blur: float, opacity: float,
+                    canvas: tuple[int, int], out: Path) -> Path:
+    """인화지(대지) + 드롭섀도를 한 장으로. 이미 기울여서 굽는다.
+
+    사진 스트림은 ffmpeg 의 rotate 로 같은 각도·같은 캔버스에서 돌린다.
+    둘 다 캔버스 중심을 기준으로 돌리므로 정확히 겹친다.
+    (PIL 의 rotate 는 반시계, ffmpeg 의 rotate 는 시계 방향이라 부호를 뒤집는다)
+    """
+    EW, EH = canvas
+    layer = Image.new("RGBA", (EW, EH), (0, 0, 0, 0))
+    x0, y0 = (EW - fw) / 2, (EH - fh) / 2
+    r = max(0.0, min(radius, min(fw, fh) / 2))
+
+    if opacity > 0 and pad > 0:
+        sh = Image.new("L", (EW, EH), 0)
+        ImageDraw.Draw(sh).rounded_rectangle(
+            [x0, y0 + pad * 0.22, x0 + fw - 1, y0 + fh - 1 + pad * 0.22],
+            radius=r, fill=255)
+        sh = sh.filter(ImageFilter.GaussianBlur(blur))
+        shadow = Image.new("RGBA", (EW, EH), (0, 0, 0, 0))
+        shadow.putalpha(Image.eval(sh, lambda v: int(v * opacity)))
+        layer.alpha_composite(shadow)
+
+    mat = Image.new("RGBA", (EW, EH), (0, 0, 0, 0))
+    ImageDraw.Draw(mat).rounded_rectangle(
+        [x0, y0, x0 + fw - 1, y0 + fh - 1], radius=r, fill=_hex(color))
+    layer.alpha_composite(mat)
+
+    if abs(deg) > 1e-6:
+        layer = layer.rotate(-deg, resample=Image.BICUBIC, expand=False)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    layer.save(out)
     return out
