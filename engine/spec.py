@@ -21,6 +21,10 @@ class Stroke(BaseModel):
 
 
 class TextStyle(BaseModel):
+    # 장식용 텍스트(스크랩북의 연한 라틴 문구 블록 등)는 여러 줄로 흐르는 게
+    # 의도다. preflight 의 줄 수 경고에서 제외한다 — 오탐이 쌓이면 운영자가
+    # WARN 전체를 무시하게 되고 그때부터 검증이 무의미해진다.
+    decorative: bool = False
     font: str = "Pretendard-Bold.otf"
     size: int = 72
     color: str = "#FFFFFF"

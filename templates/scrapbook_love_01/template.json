@@ -214,7 +214,8 @@
       "letter_spacing": 1.4,
       "line_height": 1.75,
       "max_width": 0.155,
-      "uppercase": true
+      "uppercase": true,
+      "decorative": true
     }
   },
   "scenes": [

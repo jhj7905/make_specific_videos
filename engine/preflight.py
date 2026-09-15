@@ -193,7 +193,7 @@ def _check_texts(tpl: Template, resolved: dict[str, str],
                     "error", where,
                     f"텍스트가 화면 밖으로 넘칩니다 ({len(lines)}줄, {int(block_h)}px)",
                     f"\"{preview}\" — 문구를 줄이거나 style.size 를 낮추세요"))
-            elif len(lines) > MAX_TEXT_LINES:
+            elif len(lines) > MAX_TEXT_LINES and not style.decorative:
                 out.append(Finding(
                     "warn", where,
                     f"{len(lines)}줄로 줄바꿈됩니다 — 한 화면에 깁니다",
