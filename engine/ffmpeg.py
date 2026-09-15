@@ -41,14 +41,16 @@ def duration(path: str | Path) -> float:
     return float(info["format"]["duration"])
 
 
-def video_encode_args(cq: int, *, gpu: int | None = None, preset: str = "p6") -> list[str]:
+def video_encode_args(cq: int, *, gpu: int | None = None,
+                      preset: str | None = None) -> list[str]:
     """NVENC 우선, 없으면 libx264 폴백."""
     if config.USE_NVENC:
-        args = ["-c:v", "h264_nvenc", "-preset", preset, "-tune", "hq",
+        args = ["-c:v", "h264_nvenc", "-preset", preset or config.NVENC_PRESET,
+                "-tune", "hq",
                 "-rc", "vbr", "-cq", str(cq), "-b:v", "0",
                 "-profile:v", "high", "-pix_fmt", "yuv420p"]
         if gpu is not None:
             args += ["-gpu", str(gpu)]
         return args
-    return ["-c:v", "libx264", "-preset", "slow", "-crf", str(cq),
+    return ["-c:v", "libx264", "-preset", config.X264_PRESET, "-crf", str(cq),
             "-profile:v", "high", "-pix_fmt", "yuv420p"]

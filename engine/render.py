@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from PIL import Image, ImageDraw
 import config
-from engine import ffmpeg, audio
+from engine import ffmpeg, audio, cache
 from engine.scene import render_scene, _substitute
 from engine.spec import (Template, Job, load_template, parse_size,
                          MediaLayer, TextLayer)
@@ -68,6 +68,17 @@ def prune_template(tpl: Template, resolved: dict[str, str]) -> Template:
 
 # ── 씬 결합 ───────────────────────────────────────────────────────────────
 MIN_CUT = 0.034     # '컷' 전환도 xfade 로 처리 (1프레임)
+
+
+def timeline_duration(tpl: Template, clips: list[Path]) -> float:
+    """전환 겹침을 뺀 최종 길이. 결합을 캐시에서 건너뛰어도 값이 같아야 한다."""
+    durs = [ffmpeg.duration(c) for c in clips]
+    acc = durs[0]
+    for i in range(1, len(clips)):
+        s = tpl.scenes[i - 1]
+        tdur = max(s.transition.dur, MIN_CUT) if s.transition else MIN_CUT
+        acc += durs[i] - tdur
+    return acc
 
 
 def concat_scenes(tpl: Template, clips: list[Path], out: Path, work: Path) -> float:
@@ -144,7 +155,11 @@ def render_preview(master: Path, tpl: Template, out: Path, work: Path,
 # ── 메인 ──────────────────────────────────────────────────────────────────
 def render_job(job: Job, *, out_dir: Path | None = None, keep_work: bool = True,
                gpus: list[int] | None = None, workers: int | None = None,
-               aspect: str | None = None) -> dict:
+               aspect: str | None = None, force: bool = False) -> dict:
+    """주문 1건 렌더. 이미 만들어 둔 씬은 재사용한다(force=True 면 전부 다시).
+
+    '프리뷰 → 문구 수정 → 재렌더' 왕복에서 바뀐 씬만 다시 돈다.
+    """
     t_all = time.time()
     tpl = load_template(job.template)
     want = aspect or job.aspect
@@ -161,39 +176,67 @@ def render_job(job: Job, *, out_dir: Path | None = None, keep_work: bool = True,
 
     gpus = gpus or config.GPU_IDS
     workers = workers or config.SCENE_WORKERS
+    state = {} if force else cache.load_state(work)
 
     print(f"▶ 템플릿 {tpl.id} ({tpl.name}) · 씬 {len(tpl.scenes)}개 · "
           f"{tpl.total_duration:.1f}초 · {tag}@{tpl.fps} "
           f"({'가로' if tpl.is_landscape else '세로'}, px배율 {tpl.scale:.2f})")
 
-    # 1) 씬 병렬 렌더
+    # 1) 씬 렌더 — 지문이 같으면 건너뛴다
+    scene_fps = [cache.scene_fingerprint(tpl, sc, resolved) for sc in tpl.scenes]
+    clips = [work / f"scene_{i:02d}_{fp}.mp4" for i, fp in enumerate(scene_fps)]
+    if force:
+        for p in clips:
+            p.unlink(missing_ok=True)
+    reused = [i for i, p in enumerate(clips) if p.exists()]
+
     t0 = time.time()
-    def _one(i: int):
+
+    def _one(i: int) -> Path:
+        if clips[i].exists():
+            return clips[i]
         gpu = gpus[i % len(gpus)] if gpus else None
-        p = render_scene(tpl, tpl.scenes[i], i, resolved, work, gpu=gpu)
+        p = render_scene(tpl, tpl.scenes[i], i, resolved, work, gpu=gpu, out=clips[i])
         print(f"  · scene {i:02d} ({tpl.scenes[i].name or '-'}) 완료")
         return p
 
+    if reused:
+        print(f"  · 캐시 재사용 {len(reused)}/{len(clips)}씬 "
+              f"({', '.join(f'{i:02d}' for i in reused)})")
     with ThreadPoolExecutor(max_workers=workers) as ex:
         clips = list(ex.map(_one, range(len(tpl.scenes))))
     t_scene = time.time() - t0
 
     # 2) 전환 결합
     t0 = time.time()
-    silent = work / "silent.mp4"
-    dur = concat_scenes(tpl, clips, silent, work)
+    cfp = cache.concat_fingerprint(tpl, scene_fps)
+    silent = work / f"silent_{cfp}.mp4"
+    dur = timeline_duration(tpl, clips)
+    if force or not silent.exists():
+        for stale in work.glob("silent_*.mp4"):
+            if stale != silent:
+                stale.unlink(missing_ok=True)
+        concat_scenes(tpl, clips, silent, work)
+    else:
+        print("  · 결합 캐시 재사용")
     t_concat = time.time() - t0
 
     # 3) BGM + 마스터
     t0 = time.time()
-    bgm = audio.ensure_bgm(tpl, dur, work)
+    mfp = cache.master_fingerprint(tpl, cfp)
     master = out_dir / f"{job.order_id}_{tpl.id}_{tag}_master.mp4"
-    audio.mux(silent, bgm, tpl, dur, master, work, cq=config.MASTER_CQ)
+    if force or state.get("master") != mfp or not master.exists():
+        bgm = audio.ensure_bgm(tpl, dur, work)
+        audio.mux(silent, bgm, tpl, dur, master, work, cq=config.MASTER_CQ)
+        state["master"] = mfp
+    else:
+        print("  · 마스터 캐시 재사용")
     t_audio = time.time() - t0
 
     result = {
         "order_id": job.order_id, "template": tpl.id, "template_version": tpl.version,
         "resolution": tag, "duration": round(dur, 2), "master": str(master),
+        "cached_scenes": len(reused), "total_scenes": len(clips),
         "timing": {"scenes": round(t_scene, 1), "concat": round(t_concat, 1),
                    "audio": round(t_audio, 1), "total": round(time.time() - t_all, 1)},
     }
@@ -201,9 +244,13 @@ def render_job(job: Job, *, out_dir: Path | None = None, keep_work: bool = True,
     # 4) 프리뷰
     if job.preview:
         prev = out_dir / f"{job.order_id}_{tpl.id}_{tag}_preview.mp4"
-        render_preview(master, tpl, prev, work)
+        if force or state.get("preview") != mfp or not prev.exists():
+            render_preview(master, tpl, prev, work)
+            state["preview"] = mfp
         result["preview"] = str(prev)
 
+    cache.save_state(work, state)
+    cache.sweep(work, {p.name for p in clips})
     (work / "manifest.json").write_text(
         json.dumps({**result, "inputs": resolved}, ensure_ascii=False, indent=2),
         encoding="utf-8")
@@ -211,5 +258,6 @@ def render_job(job: Job, *, out_dir: Path | None = None, keep_work: bool = True,
         shutil.rmtree(work, ignore_errors=True)
 
     print(f"✔ 완료 {result['timing']['total']}초 "
-          f"(씬 {t_scene:.1f}s / 결합 {t_concat:.1f}s / 오디오 {t_audio:.1f}s)")
+          f"(씬 {t_scene:.1f}s / 결합 {t_concat:.1f}s / 오디오 {t_audio:.1f}s"
+          f"{f' · 캐시 {len(reused)}씬' if reused else ''})")
     return result

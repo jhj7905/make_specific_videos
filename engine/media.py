@@ -7,7 +7,7 @@ from __future__ import annotations
 import numpy as np
 from pathlib import Path
 from PIL import Image, ImageOps, ImageEnhance, ImageFilter
-from engine import ffmpeg, face
+from engine import ffmpeg, face, atomic
 from engine.text import cache_key
 
 IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp", ".heic", ".bmp"}
@@ -209,8 +209,10 @@ def prepare_image(src: Path, out_dir: Path, canvas: tuple[int, int],
     img = apply_grade(img, grade)
     if fit != "blur":
         img = img.filter(ImageFilter.UnsharpMask(radius=2, percent=45, threshold=3))
-    out.parent.mkdir(parents=True, exist_ok=True)
-    img.save(out, "PNG")
+    # 같은 사진이 여러 씬에 쓰이면 워커들이 이 경로에 동시에 쓴다 → 원자 교체
+    with atomic.produce(out) as tmp:
+        if tmp:
+            img.save(tmp, "PNG")
     return out
 
 
@@ -239,7 +241,9 @@ def prepare_video(src: Path, out_dir: Path, canvas: tuple[int, int],
                f":brightness={g.get('lift',0)/255:.3f}")
     vf += ",setsar=1"
 
-    ffmpeg.run(["-ss", str(trim_start), "-t", str(dur), "-i", str(src),
-                "-an", "-vf", vf, "-r", "30",
-                *ffmpeg.video_encode_args(16), str(out)])
+    with atomic.produce(out) as tmp:
+        if tmp:
+            ffmpeg.run(["-ss", str(trim_start), "-t", str(dur), "-i", str(src),
+                        "-an", "-vf", vf, "-r", "30",
+                        *ffmpeg.video_encode_args(16), str(tmp)])
     return out

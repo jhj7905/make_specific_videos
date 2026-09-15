@@ -8,7 +8,7 @@
 from __future__ import annotations
 from pathlib import Path
 import config
-from engine import ffmpeg, media
+from engine import ffmpeg, media, atomic
 from engine.spec import Template, Scene, MediaLayer, FxLayer, TextLayer
 from engine.text import (render_text_png, render_scrim_png, render_round_mask,
                          render_frame_shadow, render_frame_border, cache_key)
@@ -93,7 +93,13 @@ def _text_anim(idx: int, anim, dur: float, W: int, H: int,
 
 
 def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
-                    work: Path, out: Path, gpu: int | None = None) -> list[str]:
+                    work: Path, out: Path, gpu: int | None = None,
+                    still_at: float | None = None) -> list[str]:
+    """씬 하나를 렌더하는 ffmpeg 인자를 만든다.
+
+    still_at 이 주어지면 mp4 대신 그 시각의 정지 프레임 PNG 하나만 뽑는다.
+    (스토리보드용 — 영상 인코딩 없이 레이아웃만 3초 안에 확인한다)
+    """
     W, H, fps = tpl.width, tpl.height, tpl.fps
     k = tpl.scale                       # px 단위 값 환산 배율
     frames = max(1, int(round(scene.dur * fps)))
@@ -151,8 +157,9 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
             pad = max(12, int(min(pw, ph) * 0.10))
             key = cache_key("shadow", pw, ph, radius, pad)
             sp = work / f"fshadow_{key}.png"
-            if not sp.exists():
-                render_frame_shadow(pw, ph, radius, pad, pad * 0.55, 0.55, "#000000", sp)
+            with atomic.produce(sp) as tmp:
+                if tmp:
+                    render_frame_shadow(pw, ph, radius, pad, pad * 0.55, 0.55, "#000000", tmp)
             inputs += ["-loop", "1", "-i", str(sp)]
             filters.append(f"[{n}:v]format=rgba[fs{i}]")
             filters.append(f"[{base_label}][fs{i}]overlay={px-pad}:{py-pad}:"
@@ -178,8 +185,9 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         if radius > 0:
             key = cache_key("mask", pw, ph, radius)
             mp = work / f"fmask_{key}.png"
-            if not mp.exists():
-                render_round_mask(pw, ph, radius, mp)
+            with atomic.produce(mp) as tmp:
+                if tmp:
+                    render_round_mask(pw, ph, radius, tmp)
             inputs += ["-loop", "1", "-i", str(mp)]
             filters.append(f"[{n}:v]format=gray[fm{i}]")
             filters.append(f"[{vlbl}][fm{i}]alphamerge[fa{i}]")
@@ -192,8 +200,9 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         if border_w > 0:
             key = cache_key("border", pw, ph, radius, border_w, ml.border_color)
             bp = work / f"fborder_{key}.png"
-            if not bp.exists():
-                render_frame_border(pw, ph, radius, border_w, ml.border_color, bp)
+            with atomic.produce(bp) as tmp:
+                if tmp:
+                    render_frame_border(pw, ph, radius, border_w, ml.border_color, tmp)
             inputs += ["-loop", "1", "-i", str(bp)]
             filters.append(f"[{n}:v]format=rgba[fb{i}]")
             filters.append(f"[{base_label}][fb{i}]overlay={px}:{py}:format=auto[fbo{i}]")
@@ -207,8 +216,9 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
             skind = fx.params.get("shape", "bottom")
             key = cache_key("scrim", skind, sorted(fx.params.items()), W, H)
             png = work / f"scrim_{key}.png"
-            if not png.exists():
-                render_scrim_png(skind, fx.params, (W, H), png)
+            with atomic.produce(png) as tmp:
+                if tmp:
+                    render_scrim_png(skind, fx.params, (W, H), tmp)
             inputs += ["-loop", "1", "-i", str(png)]
             filters.append(f"[{n}:v]format=rgba[sc{j}]")
             filters.append(f"[{cur}][sc{j}]overlay=0:0:format=auto[fx{j}]")
@@ -229,8 +239,9 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         style = tpl.style(l.style)
         key = cache_key(content, style.model_dump_json(), l.pos, W, H, round(k, 4))
         png = work / f"txt_{tpl.id}_{key}.png"
-        if not png.exists():
-            render_text_png(content, style, (W, H), l.pos, png, scale=k)
+        with atomic.produce(png) as tmp:
+            if tmp:
+                render_text_png(content, style, (W, H), l.pos, tmp, scale=k)
         inputs += ["-loop", "1", "-i", str(png)]
         pre, ox, oy = _text_anim(ti, l.anim, scene.dur, W, H, k)
         filters.append(f"[{n}:v]{pre}[t{ti}]")
@@ -238,6 +249,15 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
         cur = f"tx{ti}"
         n += 1
         ti += 1
+
+    if still_at is not None:
+        # trim 으로 원하는 프레임 하나만 통과시킨다. -vsync/-fps_mode 의
+        # ffmpeg 버전별 차이를 피하려고 select 대신 trim 을 쓴다.
+        n0 = max(0, min(frames - 1, int(round(still_at * fps))))
+        filters.append(f"[{cur}]trim=start_frame={n0}:end_frame={n0+1},"
+                       f"setpts=PTS-STARTPTS,format=rgb24[vout]")
+        return [*inputs, "-filter_complex", ";".join(filters),
+                "-map", "[vout]", "-frames:v", "1", str(out)]
 
     filters.append(f"[{cur}]format=yuv420p[vout]")
     return [*inputs, "-filter_complex", ";".join(filters),
@@ -260,8 +280,23 @@ def _resolve_src(tpl: Template, src: str, resolved: dict[str, str]) -> str:
 
 
 def render_scene(tpl: Template, scene: Scene, idx: int, resolved: dict[str, str],
-                 work: Path, gpu: int | None = None) -> Path:
-    out = work / f"scene_{idx:02d}.mp4"
-    cmd = build_scene_cmd(tpl, scene, resolved, work, out, gpu=gpu)
-    ffmpeg.run(cmd, log=work / "render.log")
+                 work: Path, gpu: int | None = None,
+                 out: Path | None = None) -> Path:
+    out = out or work / f"scene_{idx:02d}.mp4"
+    with atomic.produce(out) as tmp:
+        if tmp:
+            cmd = build_scene_cmd(tpl, scene, resolved, work, tmp, gpu=gpu)
+            ffmpeg.run(cmd, log=work / "render.log")
+    return out
+
+
+def render_scene_still(tpl: Template, scene: Scene, idx: int,
+                       resolved: dict[str, str], work: Path,
+                       out: Path, at: float | None = None) -> Path:
+    """씬의 대표 프레임 1장. at 은 씬 시작 기준 초(기본: 씬 중간)."""
+    at = scene.dur * 0.55 if at is None else at
+    with atomic.produce(out) as tmp:
+        if tmp:
+            cmd = build_scene_cmd(tpl, scene, resolved, work, tmp, still_at=at)
+            ffmpeg.run(cmd, log=work / "render.log")
     return out

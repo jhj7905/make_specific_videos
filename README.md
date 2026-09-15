@@ -15,11 +15,26 @@
 ./run.sh templates               # 템플릿 목록
 ./run.sh inputs propose_neon_01  # 입력 슬롯 확인 + job 양식 출력
 ./run.sh demo propose_neon_01                 # 폴더 사진으로 데모 job 자동 생성
+./run.sh check jobs/demo.json                 # ★ 렌더 전 주문 검증
+./run.sh storyboard jobs/demo.json            # ★ 씬별 정지컷 한 장 (레이아웃 확인)
 ./run.sh render jobs/demo.json --aspect 16:9  # 가로 1920x1080
 ./run.sh render jobs/demo.json --aspect 16:9,9:16 --gpus 0,1,2,3   # 가로+세로 한 번에
+./run.sh render jobs/demo.json --force        # 씬 캐시 무시하고 전부 다시
+```
+
+주문 1건의 표준 동선:
+
+```bash
+./run.sh check jobs/1234.json           # 사고를 먼저 잡는다 (ERROR 면 exit 1)
+./run.sh storyboard jobs/1234.json      # 레이아웃을 한 장으로 훑는다
+./run.sh render jobs/1234.json          # 프리뷰 전달
+# 고객이 문구 수정을 요청 → job 파일만 고치고
+./run.sh render jobs/1234.json          # 바뀐 씬만 다시 돈다
+./run.sh check jobs/1234.json --sale    # 납품 직전 게이트 (음원 라이선스까지 ERROR)
 ```
 
 결과물 (`<태그>` = `1920x1080` / `1080x1920`):
+- `storage/output/<주문번호>_<템플릿>_<태그>_board.png` — 씬별 정지컷 컨택트시트
 - `storage/output/<주문번호>_<템플릿>_<태그>_master.mp4` — 납품용
 - `storage/output/<주문번호>_<템플릿>_<태그>_preview.mp4` — 워터마크 (결제/확정 전 노출용)
 - `storage/work/<주문번호>_<템플릿>_<태그>/manifest.json` — 재현용 기록 (입력 + 템플릿 버전)
@@ -31,14 +46,58 @@
 
 ```
 engine/
-  spec.py    템플릿 JSON 스키마 (pydantic). 새 기능은 여기부터 정의
-  media.py   고객 소재 정규화: EXIF회전·스마트크롭·화이트밸런스·그레이딩
-  text.py    Pillow 로 텍스트/스크림 PNG 굽기 (자간·그라데이션·네온글로우)
-  scene.py   씬 1개 → filter_complex 생성 → 중간 mp4
-  audio.py   BGM 루프·페이드·loudnorm
-  render.py  씬 병렬 렌더 → xfade 결합 → 마스터/프리뷰
+  spec.py       템플릿 JSON 스키마 (pydantic). 새 기능은 여기부터 정의
+  media.py      고객 소재 정규화: EXIF회전·스마트크롭·화이트밸런스·그레이딩
+  text.py       Pillow 로 텍스트/스크림 PNG 굽기 (자간·그라데이션·네온글로우)
+  scene.py      씬 1개 → filter_complex 생성 → 중간 mp4 (+ 정지컷)
+  audio.py      BGM 루프·페이드·loudnorm
+  render.py     씬 병렬 렌더 → xfade 결합 → 마스터/프리뷰
+  atomic.py     캐시 파일 원자적 생성 (워커 간 동시 쓰기 방지)
+  cache.py      씬 지문 계산 → 증분 렌더
+  preflight.py  주문 사전 검증
+  storyboard.py 씬별 정지컷 → 컨택트시트
 templates/<id>/template.json + assets/
 ```
+
+### 렌더 전에 검증한다 (`check`)
+
+주문 1건은 사진 15장 + 문구 10줄이다. 그중 하나만 어긋나도 결과가 망가지는데,
+렌더를 끝내고 눈으로 봐야 알 수 있으면 그 확인 비용이 주문마다 반복된다.
+
+```
+✖ ERROR photo3    파일이 없습니다: storage/uploads/1234/IMG_0043.jpg
+✖ ERROR bgm       플레이스홀더 합성 음원입니다 (procedural=neon_pulse)
+▲ WARN  photo6    1400x900 → 'proposal' 씬에서 2.65배 확대 (많이 뭉개집니다)
+                   └ 이 슬롯의 목표 크기는 1339x2380px 입니다
+▲ WARN  photo6    'proposal' 씬에서 원본의 64% 가 잘려나갑니다
+▲ WARN  climax/big 5줄로 줄바꿈됩니다 — 한 화면에 깁니다
+```
+
+요구 해상도는 템플릿을 실제로 걸어서 계산한다 — 콜라주 타일이면 타일 크기,
+Ken Burns 면 최대 zoom 까지 반영. 텍스트는 실제 폰트로 줄바꿈을 돌려서
+캔버스를 넘치면 ERROR 다.
+
+`--sale` 을 붙이면 음원 라이선스 문제가 ERROR 로 올라가고 exit code 1 이
+나간다. 납품 스크립트에 게이트로 걸 것.
+
+가로/세로는 검증 결과가 다르다. 세로 원본은 16:9 에서 크게 잘리므로
+`--aspect 16:9,9:16` 으로 둘 다 확인하는 게 맞다.
+
+### 수정 1회는 원가다 (증분 렌더)
+
+주문은 거의 항상 '프리뷰 전달 → 문구 한 줄 수정 → 재렌더' 를 한두 번 돈다.
+씬의 결과를 결정하는 모든 입력(템플릿 정의, 참조 슬롯의 값과 파일 mtime,
+출력 규격, 인코딩 설정)을 해시해 파일명에 박아두면, 바뀐 씬만 다시 돈다.
+
+실측 (CPU / x264 veryfast / 8씬 27.5초):
+
+| | 씬 | 결합 | 오디오 | 합계 |
+|---|---|---|---|---|
+| 최초 | 139.9s | 49.4s | 6.7s | **196.0s** |
+| 문구 1줄 수정 후 | 10.1s | 49.3s | 1.4s | **60.8s** |
+
+사진을 교체해도(경로가 같아도 크기·mtime 이 달라진다) 해시가 바뀌므로
+캐시가 먹지 않는다. `--force` 로 전부 무시할 수 있다.
 
 ### 왜 씬 단위로 쪼개나
 1. 실패한 씬만 재렌더 → 40초 영상에서 1씬 오타를 고치는데 전체를 다시 돌리지 않는다
@@ -119,9 +178,13 @@ Pillow 로 전체 캔버스 RGBA PNG 를 만들고 ffmpeg 은 `overlay` 만 시�
 
 ## 운영 메모
 
-- **환경변수**: `MV_FFMPEG` (ffmpeg 경로) · `MV_FFMPEG_SRC` (소스빌드 디렉터리)
+- **환경변수**: `MV_FFMPEG` (ffmpeg 경로) · `MV_FFMPEG_SRC` (소스빌드 디렉터리, 비우면 PATH)
   · `MV_NVENC=0` (GPU 없는 클라우드에서 libx264 폴백) · `MV_GPUS=0,1,2,3` · `MV_WORKERS`
+  · `MV_NVENC_PRESET` (기본 p6) · `MV_X264_PRESET` (기본 medium)
   · `MV_FACE=0` (얼굴검출 끄기) · `MV_FACE_MODEL` (SCRFD onnx 경로) · `MV_FACE_THREADS`
+- **CPU 폴백 프리셋**: x264 `slow` 는 1080x1920 한 씬에 수 분이 걸려 GPU 없는
+  서버에서는 사실상 못 쓴다. 기본값을 `medium` 으로 낮췄고, 템플릿을 만들며
+  반복 렌더할 때는 `MV_X264_PRESET=veryfast` 가 편하다.
 - **클라우드 이전 시**: `setup.sh` 실행 → `MV_NVENC=0` 이면 CPU 인코딩으로 자동 폴백.
   GPU 인스턴스면 nvenc 가 8~10배 빠르므로 렌더 서버는 GPU 인스턴스를 권장.
 - 이 서버의 소스빌드 ffmpeg 은 `libx264.so.164` 링크가 깨져 있어 `vendor/lib/` 에
@@ -138,6 +201,21 @@ Pillow 로 전체 캔버스 RGBA PNG 를 만들고 ffmpeg 은 `overlay` 만 시�
 
 ## 알려진 한계 / 다음 단계
 
+- **결합(concat)이 증분이 아니다.** 씬 하나만 바뀌어도 전체를 xfade 체인으로
+  다시 인코딩한다. 씬 렌더가 캐시로 10초까지 내려오면 결합 49초가 유일한 비용이
+  된다. xfade 는 인접 씬 경계에서만 필요하므로, 전환 구간(0.5~0.8초)만 렌더하고
+  본문 구간은 concat demuxer 로 스트림 복사하면 대부분을 건너뛸 수 있다.
+  씬 클립을 짧은 GOP(`-g`)로 뽑아야 정확히 트림된다.
+- **`for_size` 의 오버라이드 병합이 검증되지 않는다.** `model_copy(update=ov)` 는
+  타입 변환을 하지 않으므로, `landscape` 블록에 `motion` 이나 `style` 같은
+  중첩 객체를 넣으면 raw dict 로 들어가 `ml.motion.kind` 에서 터진다. 지금
+  템플릿들은 스칼라만 써서 안 터지지만, 템플릿을 늘리면 밟는다. `merge()` 를
+  `model_validate(obj.model_dump() | ov)` 로 바꿀 것.
+- **가로에서 텍스트가 한 줄로 늘어난다.** `max_width` 가 캔버스 폭 대비 비율이라
+  0.82 × 1920 = 1574px 다. 세로에서 2줄로 떨어지던 문구가 가로에서는 한 줄이
+  된다. 방향 오버라이드에서 `max_width` 도 손봐야 한다.
 - 씬 컷이 BGM 비트에 동기화되어 있지 않다. `librosa.beat.beat_track` 으로 비트를 뽑아
   씬 길이를 ±0.2초 스냅시키면 체감 퀄리티가 한 단계 올라간다.
 - 웹 주문/업로드 페이지, 렌더 큐, 스마트스토어 커머스API 연동은 아직 없다 (2단계).
+  그때 `job.inputs` 의 파일 경로는 고객 입력이 되므로 업로드 디렉터리 밖을
+  가리키지 못하게 막아야 한다 (지금은 CLI 전용이라 문제 없음).

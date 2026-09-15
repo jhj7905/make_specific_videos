@@ -44,12 +44,8 @@ def model_path() -> Path | None:
     env = os.environ.get("MV_FACE_MODEL")
     if env:
         return Path(env) if Path(env).exists() else None
-    for base in (config.ROOT / "weight" / "face",
-                 Path("/home/hyunjo/project/AI_Repurpose_Service_inte/weight/face")):
-        p = base / MODEL_NAME
-        if p.exists():
-            return p
-    return None
+    p = config.ROOT / "weight" / "face" / MODEL_NAME
+    return p if p.exists() else None
 
 
 def _get_session():

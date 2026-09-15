@@ -3,17 +3,22 @@
 
   python cli.py templates                      # 템플릿 목록
   python cli.py inputs propose_neon_01         # 입력 슬롯 확인
+  python cli.py check jobs/demo.json           # 렌더 전 주문 검증 (사고 예방)
+  python cli.py check jobs/demo.json --sale    # 납품 기준(음원 라이선스까지 ERROR)
+  python cli.py storyboard jobs/demo.json      # 씬별 정지컷 한 장 (레이아웃 확인)
   python cli.py render jobs/demo.json          # 렌더
   python cli.py render jobs/demo.json --aspect 16:9
   python cli.py render jobs/demo.json --aspect 16:9,9:16   # 가로+세로 한 번에
   python cli.py render jobs/demo.json --gpus 0,1,2,3 --no-preview
+  python cli.py render jobs/demo.json --force  # 씬 캐시 무시하고 전부 다시
 """
 from __future__ import annotations
 import argparse, json, sys
 from pathlib import Path
 import config
-from engine.spec import list_templates, load_template, Job
-from engine.render import render_job
+from engine.spec import list_templates, load_template, parse_size, Job
+from engine.render import render_job, resolve_inputs, prune_template
+from engine import preflight, storyboard
 
 
 def cmd_templates(_):
@@ -64,6 +69,42 @@ def cmd_demo(a):
         print(json.dumps(res, ensure_ascii=False, indent=2))
 
 
+def _prepared(job: Job, aspect: str | None):
+    """검증/스토리보드용: 출력 규격까지 반영한 템플릿."""
+    tpl = load_template(job.template)
+    want = aspect or job.aspect
+    if want:
+        tpl = tpl.for_size(parse_size(want))
+    return tpl
+
+
+def cmd_check(a):
+    job = Job.load(a.job)
+    worst = 0
+    for asp in ([x.strip() for x in a.aspect.split(",")] if a.aspect else [None]):
+        tpl = _prepared(job, asp)
+        findings = preflight.run(tpl, job, sale=a.sale, check_faces=not a.no_face)
+        if a.json:
+            print(preflight.to_json(tpl, job, findings))
+        else:
+            print(preflight.report(tpl, job, findings))
+            print()
+        worst = max(worst, preflight.summarize(findings)["error"])
+    sys.exit(1 if worst else 0)
+
+
+def cmd_storyboard(a):
+    job = Job.load(a.job)
+    tpl = _prepared(job, a.aspect)
+    resolved = resolve_inputs(tpl, job)
+    tpl = prune_template(tpl, resolved)
+    tag = f"{tpl.width}x{tpl.height}"
+    work = config.WORK_DIR / f"{job.order_id}_{tpl.id}_{tag}"
+    out = Path(a.out) if a.out else config.OUTPUT_DIR / f"{job.order_id}_{tpl.id}_{tag}_board.png"
+    p = storyboard.build(tpl, resolved, work, out, cols=a.cols)
+    print(f"스토리보드: {p}")
+
+
 def cmd_render(a):
     job = Job.load(a.job)
     if a.no_preview:
@@ -72,7 +113,8 @@ def cmd_render(a):
     aspects = [x.strip() for x in a.aspect.split(",")] if a.aspect else [None]
     out = []
     for asp in aspects:
-        out.append(render_job(job, gpus=gpus, workers=a.workers, aspect=asp))
+        out.append(render_job(job, gpus=gpus, workers=a.workers, aspect=asp,
+                              force=a.force))
     print(json.dumps(out if len(out) > 1 else out[0], ensure_ascii=False, indent=2))
 
 
@@ -93,8 +135,26 @@ def main():
     d.add_argument("--render", action="store_true")
     d.set_defaults(fn=cmd_demo)
 
+    c = sub.add_parser("check", help="렌더 전 주문 검증")
+    c.add_argument("job")
+    c.add_argument("--aspect", default=None, help="예: 16:9 또는 '16:9,9:16'")
+    c.add_argument("--sale", action="store_true",
+                   help="납품 기준 — 음원 라이선스 문제를 ERROR 로 올린다")
+    c.add_argument("--no-face", action="store_true", help="얼굴 검출 검사 생략")
+    c.add_argument("--json", action="store_true")
+    c.set_defaults(fn=cmd_check)
+
+    b = sub.add_parser("storyboard", help="씬별 정지컷 컨택트시트")
+    b.add_argument("job")
+    b.add_argument("--aspect", default=None)
+    b.add_argument("--cols", type=int, default=None)
+    b.add_argument("--out", default=None)
+    b.set_defaults(fn=cmd_storyboard)
+
     r = sub.add_parser("render")
     r.add_argument("job")
+    r.add_argument("--force", action="store_true",
+                   help="씬 캐시를 무시하고 전부 다시 렌더")
     r.add_argument("--gpus", default=None, help="예: 0,1,2,3")
     r.add_argument("--aspect", default=None,
                    help="출력 규격. 예: 16:9 / 9:16 / 1920x1080 / '16:9,9:16'(둘 다)")

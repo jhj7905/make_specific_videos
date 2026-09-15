@@ -8,7 +8,7 @@
 from __future__ import annotations
 from pathlib import Path
 import config
-from engine import ffmpeg
+from engine import ffmpeg, atomic
 from engine.spec import Template
 
 # 화성 (주파수 Hz)
@@ -47,12 +47,13 @@ def ensure_bgm(tpl: Template, dur: float, work: Path) -> Path | None:
         return tpl.asset(b.src)
     if b.procedural:
         out = work / f"bgm_{b.procedural}_{dur:.1f}.wav"
-        if not out.exists():
-            expr = _pad_expr(b.procedural, dur)
-            ffmpeg.run(["-f", "lavfi", "-i",
-                        f"aevalsrc=exprs='{expr}':d={dur+2:.2f}:s=48000",
-                        "-af", "lowpass=f=3200,aecho=0.7:0.85:420|930:0.28|0.16",
-                        "-c:a", "pcm_s16le", str(out)], log=work / "render.log")
+        with atomic.produce(out) as tmp:
+            if tmp:
+                expr = _pad_expr(b.procedural, dur)
+                ffmpeg.run(["-f", "lavfi", "-i",
+                            f"aevalsrc=exprs='{expr}':d={dur+2:.2f}:s=48000",
+                            "-af", "lowpass=f=3200,aecho=0.7:0.85:420|930:0.28|0.16",
+                            "-c:a", "pcm_s16le", str(tmp)], log=work / "render.log")
         return out
     return None
 
