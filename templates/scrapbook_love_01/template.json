@@ -267,7 +267,7 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.12
             ],
             "anchor": "center"
           }
@@ -294,7 +294,7 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.13
             ],
             "anchor": "center"
           }
@@ -417,7 +417,7 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.12
             ],
             "anchor": "center"
           }
@@ -444,7 +444,7 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.14
             ],
             "anchor": "center"
           }
@@ -555,9 +555,9 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.12
             ],
-            "anchor": "center"
+            "anchor": "top"
           }
         },
         {
@@ -582,9 +582,9 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.14
             ],
-            "anchor": "center"
+            "anchor": "top"
           }
         },
         {
@@ -705,9 +705,9 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.08
+              1.11
             ],
-            "anchor": "center"
+            "anchor": "top"
           }
         },
         {
@@ -898,9 +898,9 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.13
             ],
-            "anchor": "center"
+            "anchor": "top"
           }
         },
         {
@@ -925,9 +925,9 @@
             "kind": "kenburns",
             "zoom": [
               1.0,
-              1.06
+              1.12
             ],
-            "anchor": "center"
+            "anchor": "top"
           }
         },
         {
