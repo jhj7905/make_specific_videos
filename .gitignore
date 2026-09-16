@@ -7,3 +7,5 @@ vendor/
 __pycache__/
 *.pyc
 intake/mapping.json
+jobs/
+jobs/
