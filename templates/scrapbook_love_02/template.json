@@ -1,0 +1,2146 @@
+{
+  "id": "scrapbook_love_02",
+  "name": "스크랩북 러브스토리 (롱)",
+  "category": "프로포즈",
+  "version": "1.0.0",
+  "aspect": "16:9",
+  "aspects": [
+    "16:9"
+  ],
+  "resolution": [
+    1920,
+    1080
+  ],
+  "design": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "bgm": {
+    "procedural": "warm_pad",
+    "gain_db": -15,
+    "fade_in": 1.6,
+    "fade_out": 3.0,
+    "license": "PLACEHOLDER - 판매 전 상업 라이선스 음원으로 교체 필수"
+  },
+  "inputs": [
+    {
+      "id": "name_a",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "보내는 사람",
+      "default": "지훈"
+    },
+    {
+      "id": "name_b",
+      "type": "text",
+      "required": true,
+      "max_len": 10,
+      "guide": "받는 사람",
+      "default": "서연"
+    },
+    {
+      "id": "msg1",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "오프닝 자막",
+      "default": "너와 함께한 순간들은\n내 삶에서 가장 특별한 시간이야"
+    },
+    {
+      "id": "msg2",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "문구 1 (2줄까지)",
+      "default": "그리고 우리가 나눈 이야기들은\n내게 큰 힘이 되어줬어"
+    },
+    {
+      "id": "msg3",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "문구 2",
+      "default": "너의 존재는\n내 삶에 빛을 가져다줬어"
+    },
+    {
+      "id": "msg4",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "문구 3",
+      "default": "함께 걸은 계절마다\n네가 있어서 좋았어"
+    },
+    {
+      "id": "msg5",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "문구 4",
+      "default": "웃는 얼굴을 볼 때마다\n더 잘해주고 싶어졌어"
+    },
+    {
+      "id": "msg6",
+      "type": "text",
+      "required": false,
+      "max_len": 44,
+      "guide": "문구 5",
+      "default": "앞으로의 모든 계절을\n너와 함께 걷고 싶어"
+    },
+    {
+      "id": "cap1",
+      "type": "text",
+      "required": false,
+      "max_len": 40,
+      "guide": "갤러리 자막 1",
+      "default": "너에게 줄 수 있는 가장 소중한 선물은 나의 사랑이고"
+    },
+    {
+      "id": "cap2",
+      "type": "text",
+      "required": false,
+      "max_len": 40,
+      "guide": "갤러리 자막 2",
+      "default": "오빠와 함께하는 매일매일이 무엇과도 바꿀 수 없어"
+    },
+    {
+      "id": "letter1",
+      "type": "text",
+      "required": false,
+      "max_len": 34,
+      "guide": "편지 1줄",
+      "default": "지금처럼 서로 아끼며 사랑해 주자"
+    },
+    {
+      "id": "letter2",
+      "type": "text",
+      "required": false,
+      "max_len": 20,
+      "guide": "편지 2줄",
+      "default": "사랑해♥"
+    },
+    {
+      "id": "closing",
+      "type": "text",
+      "required": false,
+      "max_len": 28,
+      "guide": "마지막 한 줄",
+      "default": "나와 결혼해 줄래?"
+    },
+    {
+      "id": "sign",
+      "type": "text",
+      "required": false,
+      "max_len": 34,
+      "guide": "엔딩 서명",
+      "default": "2026. 09. 12  ·  남산 서울타워"
+    },
+    {
+      "id": "photo1",
+      "type": "image",
+      "required": true,
+      "guide": "사진 1"
+    },
+    {
+      "id": "photo2",
+      "type": "image",
+      "required": true,
+      "guide": "사진 2"
+    },
+    {
+      "id": "photo3",
+      "type": "image",
+      "required": true,
+      "guide": "사진 3"
+    },
+    {
+      "id": "photo4",
+      "type": "image",
+      "required": true,
+      "guide": "사진 4"
+    },
+    {
+      "id": "photo5",
+      "type": "image",
+      "required": true,
+      "guide": "사진 5"
+    },
+    {
+      "id": "photo6",
+      "type": "image",
+      "required": true,
+      "guide": "사진 6"
+    },
+    {
+      "id": "photo7",
+      "type": "image",
+      "required": true,
+      "guide": "사진 7"
+    },
+    {
+      "id": "photo8",
+      "type": "image",
+      "required": true,
+      "guide": "사진 8"
+    },
+    {
+      "id": "photo9",
+      "type": "image",
+      "required": true,
+      "guide": "사진 9"
+    },
+    {
+      "id": "photo10",
+      "type": "image",
+      "required": true,
+      "guide": "사진 10"
+    },
+    {
+      "id": "photo11",
+      "type": "image",
+      "required": true,
+      "guide": "사진 11"
+    },
+    {
+      "id": "photo12",
+      "type": "image",
+      "required": true,
+      "guide": "사진 12"
+    },
+    {
+      "id": "photo13",
+      "type": "image",
+      "required": false,
+      "guide": "사진 13 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo14",
+      "type": "image",
+      "required": false,
+      "guide": "사진 14 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo15",
+      "type": "image",
+      "required": false,
+      "guide": "사진 15 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo16",
+      "type": "image",
+      "required": false,
+      "guide": "사진 16 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo17",
+      "type": "image",
+      "required": false,
+      "guide": "사진 17 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo18",
+      "type": "image",
+      "required": false,
+      "guide": "사진 18 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo19",
+      "type": "image",
+      "required": false,
+      "guide": "사진 19 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo20",
+      "type": "image",
+      "required": false,
+      "guide": "사진 20 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo21",
+      "type": "image",
+      "required": false,
+      "guide": "사진 21 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo22",
+      "type": "image",
+      "required": false,
+      "guide": "사진 22 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo23",
+      "type": "image",
+      "required": false,
+      "guide": "사진 23 (선택 — 비우면 해당 컷 생략)"
+    },
+    {
+      "id": "photo24",
+      "type": "image",
+      "required": false,
+      "guide": "사진 24 (선택 — 비우면 해당 컷 생략)"
+    }
+  ],
+  "styles": {
+    "kicker": {
+      "font": "Pretendard-Regular.otf",
+      "size": 26,
+      "color": "#9C9488",
+      "letter_spacing": 12,
+      "uppercase": true,
+      "max_width": 0.9
+    },
+    "script": {
+      "font": "NanumPenScript-Regular.ttf",
+      "size": 92,
+      "color": "#2E2A26",
+      "line_height": 1.34,
+      "max_width": 0.44
+    },
+    "script_c": {
+      "font": "NanumPenScript-Regular.ttf",
+      "size": 92,
+      "color": "#2E2A26",
+      "line_height": 1.34,
+      "max_width": 0.7
+    },
+    "big": {
+      "font": "NanumPenScript-Regular.ttf",
+      "size": 132,
+      "color": "#26221E",
+      "line_height": 1.3,
+      "max_width": 0.7,
+      "letter_spacing": 4
+    },
+    "caption": {
+      "font": "NanumPenScript-Regular.ttf",
+      "size": 72,
+      "color": "#1F1C19",
+      "line_height": 1.3,
+      "max_width": 0.86,
+      "stroke": {
+        "color": "#FFFFFFCC",
+        "width": 4
+      }
+    },
+    "filler": {
+      "font": "Pretendard-Regular.otf",
+      "size": 14,
+      "color": "#C2BAAC",
+      "letter_spacing": 1.4,
+      "line_height": 1.75,
+      "max_width": 0.155,
+      "uppercase": true,
+      "decorative": true
+    }
+  },
+  "scenes": [
+    {
+      "name": "opening",
+      "dur": 7.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.1,
+            "y": 0.08,
+            "radius": 0.4,
+            "strength": 0.78,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo1}}",
+          "fit": "cover",
+          "frame": [
+            0.13,
+            0.1,
+            0.245,
+            0.0
+          ],
+          "frame_ar": 0.95,
+          "rotate": -3.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo2}}",
+          "fit": "cover",
+          "frame": [
+            0.45,
+            0.13,
+            0.265,
+            0.0
+          ],
+          "frame_ar": 1.05,
+          "rotate": 3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "heart",
+            "x": 0.855,
+            "y": 0.44,
+            "size": 0.1,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.875,
+            0.7
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.045
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg1}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.855
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.0,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fade",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "story-1",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.06,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo3}}",
+          "fit": "cover",
+          "frame": [
+            0.5,
+            0.05,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 1.0,
+          "rotate": 2.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo4}}",
+          "fit": "cover",
+          "frame": [
+            0.62,
+            0.35,
+            0.3,
+            0.0
+          ],
+          "frame_ar": 1.3,
+          "rotate": -3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            0.235,
+            0.325
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg2}}",
+          "style": "script",
+          "pos": [
+            0.285,
+            0.455
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.165,
+            0.7
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothleft",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "story-2",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.9,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo5}}",
+          "fit": "cover",
+          "frame": [
+            0.015,
+            0.04,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 0.74,
+          "rotate": -1.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo6}}",
+          "fit": "cover",
+          "frame": [
+            0.215,
+            0.11,
+            0.26,
+            0.0
+          ],
+          "frame_ar": 0.78,
+          "rotate": 4.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            0.735,
+            0.285
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg3}}",
+          "style": "script",
+          "pos": [
+            0.735,
+            0.43
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "swirl",
+            "x": 0.735,
+            "y": 0.545,
+            "size": 0.075,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.74,
+            0.72
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "montage-1",
+      "dur": 11.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.5,
+            "y": 0.2,
+            "radius": 0.62,
+            "strength": 0.55,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo7}}",
+          "fit": "cover",
+          "frame": [
+            0.045,
+            0.1,
+            0.215,
+            0.0
+          ],
+          "frame_ar": 0.82,
+          "rotate": -5.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 0.25,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo8}}",
+          "fit": "cover",
+          "frame": [
+            0.225,
+            0.3,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 1.28,
+          "rotate": 3.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 2.0,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo9}}",
+          "fit": "cover",
+          "frame": [
+            0.4,
+            0.06,
+            0.205,
+            0.0
+          ],
+          "frame_ar": 0.76,
+          "rotate": 1.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 3.75,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo10}}",
+          "fit": "cover",
+          "frame": [
+            0.575,
+            0.34,
+            0.25,
+            0.0
+          ],
+          "frame_ar": 1.22,
+          "rotate": -3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 5.5,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo11}}",
+          "fit": "cover",
+          "frame": [
+            0.755,
+            0.09,
+            0.215,
+            0.0
+          ],
+          "frame_ar": 0.8,
+          "rotate": 4.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 7.25,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.52
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 9.0,
+            "dur": 1.0,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fade",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "story-3",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.06,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo12}}",
+          "fit": "cover",
+          "frame": [
+            0.5,
+            0.05,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 1.0,
+          "rotate": 2.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo13}}",
+          "fit": "cover",
+          "frame": [
+            0.62,
+            0.35,
+            0.3,
+            0.0
+          ],
+          "frame_ar": 1.3,
+          "rotate": -3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            0.235,
+            0.325
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg4}}",
+          "style": "script",
+          "pos": [
+            0.285,
+            0.455
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.165,
+            0.7
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothleft",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "gallery-1",
+      "dur": 7.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.14,
+            "y": 0.16,
+            "radius": 0.42,
+            "strength": 0.7,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo14}}",
+          "fit": "cover",
+          "frame": [
+            0.285,
+            0.04,
+            0.31,
+            0.0
+          ],
+          "frame_ar": 0.88,
+          "rotate": 0.8,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.135,
+            0.46
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.845,
+            0.6
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{cap1}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.885
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.9,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadewhite",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "story-4",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.9,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo15}}",
+          "fit": "cover",
+          "frame": [
+            0.015,
+            0.04,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 0.74,
+          "rotate": -1.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo16}}",
+          "fit": "cover",
+          "frame": [
+            0.215,
+            0.11,
+            0.26,
+            0.0
+          ],
+          "frame_ar": 0.78,
+          "rotate": 4.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            0.735,
+            0.285
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg5}}",
+          "style": "script",
+          "pos": [
+            0.735,
+            0.43
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "swirl",
+            "x": 0.735,
+            "y": 0.545,
+            "size": 0.075,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.74,
+            0.72
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "dissolve",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "montage-2",
+      "dur": 11.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.5,
+            "y": 0.2,
+            "radius": 0.62,
+            "strength": 0.55,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo17}}",
+          "fit": "cover",
+          "frame": [
+            0.045,
+            0.1,
+            0.215,
+            0.0
+          ],
+          "frame_ar": 0.82,
+          "rotate": -5.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 0.25,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo18}}",
+          "fit": "cover",
+          "frame": [
+            0.225,
+            0.3,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 1.28,
+          "rotate": 3.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 2.0,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo19}}",
+          "fit": "cover",
+          "frame": [
+            0.4,
+            0.06,
+            0.205,
+            0.0
+          ],
+          "frame_ar": 0.76,
+          "rotate": 1.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 3.75,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo20}}",
+          "fit": "cover",
+          "frame": [
+            0.575,
+            0.34,
+            0.25,
+            0.0
+          ],
+          "frame_ar": 1.22,
+          "rotate": -3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 5.5,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo21}}",
+          "fit": "cover",
+          "frame": [
+            0.755,
+            0.09,
+            0.215,
+            0.0
+          ],
+          "frame_ar": 0.8,
+          "rotate": 4.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.05
+            ],
+            "anchor": "center"
+          },
+          "anim": {
+            "kind": "fade",
+            "at": 7.25,
+            "dur": 0.75
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.52
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 9.0,
+            "dur": 1.0,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fade",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "story-5",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.06,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo22}}",
+          "fit": "cover",
+          "frame": [
+            0.5,
+            0.05,
+            0.235,
+            0.0
+          ],
+          "frame_ar": 1.0,
+          "rotate": 2.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo23}}",
+          "fit": "cover",
+          "frame": [
+            0.62,
+            0.35,
+            0.3,
+            0.0
+          ],
+          "frame_ar": 1.3,
+          "rotate": -3.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            0.235,
+            0.325
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{msg6}}",
+          "style": "script",
+          "pos": [
+            0.285,
+            0.455
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.7,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.165,
+            0.7
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "smoothleft",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "gallery-2",
+      "dur": 7.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.86,
+            "y": 0.16,
+            "radius": 0.42,
+            "strength": 0.7,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo24}}",
+          "fit": "cover",
+          "frame": [
+            0.285,
+            0.04,
+            0.31,
+            0.0
+          ],
+          "frame_ar": 0.88,
+          "rotate": 0.8,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.08
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.135,
+            0.46
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "LOVE ENCOMPASSES A RANGE OF STRONG AND POSITIVE EMOTIONAL AND MENTAL STATES, FROM THE MOST SUBLIME VIRTUE OR GOOD HABIT, THE DEEPEST INTERPERSONAL AFFECTION, TO THE SIMPLEST PLEASURE.",
+          "style": "filler",
+          "pos": [
+            0.845,
+            0.6
+          ],
+          "anim": {
+            "kind": "fade",
+            "at": 0.4,
+            "dur": 1.4,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{cap2}}",
+          "style": "caption",
+          "pos": [
+            "center",
+            0.885
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.9,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadewhite",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "letter",
+      "dur": 8.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.14,
+            "y": 0.12,
+            "radius": 0.4,
+            "strength": 0.62,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{letter1}}",
+          "style": "script_c",
+          "pos": [
+            "center",
+            0.425
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.6,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{letter2}}",
+          "style": "script_c",
+          "pos": [
+            "center",
+            0.545
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 1.6,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "circle",
+            "x": 0.905,
+            "y": 0.145,
+            "size": 0.028,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.7
+      }
+    },
+    {
+      "name": "proposal",
+      "dur": 9.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.5,
+            "y": 0.3,
+            "radius": 0.58,
+            "strength": 0.7,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo1}}",
+          "fit": "cover",
+          "frame": [
+            0.055,
+            0.14,
+            0.205,
+            0.0
+          ],
+          "frame_ar": 0.8,
+          "rotate": -4.0,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "media",
+          "src": "{{photo2}}",
+          "fit": "cover",
+          "frame": [
+            0.745,
+            0.18,
+            0.205,
+            0.0
+          ],
+          "frame_ar": 0.82,
+          "rotate": 3.5,
+          "mat": 0.052,
+          "mat_bottom": 2.3,
+          "mat_color": "#FEFDFB",
+          "radius": 2,
+          "shadow": true,
+          "grade": "wedding",
+          "motion": {
+            "kind": "kenburns",
+            "zoom": [
+              1.0,
+              1.06
+            ],
+            "anchor": "center"
+          }
+        },
+        {
+          "type": "text",
+          "content": "OUR LOVE STORY",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.255
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.3,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{name_a}}  ♥  {{name_b}}",
+          "style": "big",
+          "pos": [
+            "center",
+            0.415
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.9,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "underline",
+            "x": 0.5,
+            "y": 0.525,
+            "size": 0.115,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{closing}}",
+          "style": "script_c",
+          "pos": [
+            "center",
+            0.635
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 2.2,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ],
+      "transition": {
+        "name": "fadeblack",
+        "dur": 0.8
+      }
+    },
+    {
+      "name": "outro",
+      "dur": 6.0,
+      "layers": [
+        {
+          "type": "fx",
+          "kind": "paper",
+          "params": {
+            "color": "#F4F1EB",
+            "grain": 1.8,
+            "fiber": 1.6,
+            "vignette": 0.07,
+            "warm": 3.0
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "lightleak",
+          "params": {
+            "x": 0.5,
+            "y": 0.45,
+            "radius": 0.6,
+            "strength": 0.45,
+            "color": "#FFF4DE"
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "doodle",
+          "params": {
+            "shape": "heart",
+            "x": 0.5,
+            "y": 0.4,
+            "size": 0.085,
+            "color": "#BDB5A7",
+            "opacity": 0.8
+          }
+        },
+        {
+          "type": "text",
+          "content": "{{sign}}",
+          "style": "kicker",
+          "pos": [
+            "center",
+            0.585
+          ],
+          "anim": {
+            "kind": "fade_up",
+            "at": 0.8,
+            "dur": 0.9,
+            "distance": 26
+          }
+        },
+        {
+          "type": "fx",
+          "kind": "grain",
+          "params": {
+            "strength": 3
+          }
+        }
+      ]
+    }
+  ]
+}

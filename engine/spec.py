@@ -83,6 +83,9 @@ class MediaLayer(BaseModel):
     shadow: bool = True                         # frame 일 때 드롭섀도
     # 스크랩북/폴라로이드 —— 기울기가 이 미학의 핵심이다. 축에 정렬된 타일은
     # 아무리 흰 테두리를 둘러도 '스크랩북' 이 아니라 '그리드' 로 읽힌다.
+    # 씬 안에서 시간차로 등장/퇴장. 기본은 none = 씬 내내 떠 있다(기존 동작).
+    # 몽타주 — 인화지가 한 장씩 얹히며 페이지가 채워지는 구간 — 에 쓴다.
+    anim: Anim = Field(default_factory=lambda: Anim(kind="none", dur=0.6))
     rotate: float = 0.0                         # 도 단위, + 가 시계방향
     mat: float = 0.0        # 사진 바깥 인화지 여백 (frame 짧은 변 대비 비율)
     mat_bottom: float = 1.0 # 아래쪽 여백 배수 (폴라로이드는 2.2~2.6)

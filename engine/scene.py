@@ -71,6 +71,18 @@ def _fx_chain(fx: FxLayer, W: int, H: int, k: float = 1.0) -> tuple[str, list[st
     return "null", []
 
 
+def _media_fade(anim) -> str:
+    """미디어 레이어의 등장/퇴장 페이드. kind=none 이고 out_at 이 없으면 빈 문자열
+    이라 필터가 아예 안 붙는다 — 기존 템플릿 동작이 바뀌지 않는다."""
+    parts = []
+    if anim.kind != "none":
+        parts.append(f"fade=t=in:st={anim.at:.3f}:d={max(anim.dur, 0.01):.3f}:alpha=1")
+    if anim.out_at is not None:
+        parts.append(f"fade=t=out:st={anim.out_at:.3f}:"
+                     f"d={max(anim.out_dur, 0.01):.3f}:alpha=1")
+    return ",".join(parts)
+
+
 def _text_anim(idx: int, anim, dur: float, W: int, H: int,
                k: float = 1.0) -> tuple[str, str, str]:
     """(전처리 체인, overlay x식, overlay y식)"""
@@ -217,8 +229,6 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
                                     (EW, EH), tmp)
             inputs += ["-loop", "1", "-i", str(tp)]
             filters.append(f"[{n}:v]format=rgba[ft{i}]")
-            filters.append(f"[{base_label}][ft{i}]overlay={X}:{Y}:format=auto[bt{i}]")
-            base_label = f"bt{i}"
             n += 1
         else:
             pw, ph = fw, fh
@@ -231,7 +241,8 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
                         render_frame_shadow(pw, ph, radius, pad, pad * 0.55, 0.55,
                                             "#000000", tmp)
                 inputs += ["-loop", "1", "-i", str(sp)]
-                filters.append(f"[{n}:v]format=rgba[fs{i}]")
+                _f = _media_fade(ml.anim)
+                filters.append(f"[{n}:v]format=rgba{',' + _f if _f else ''}[fs{i}]")
                 filters.append(f"[{base_label}][fs{i}]overlay={px-pad}:{py-pad}:"
                                f"format=auto[bs{i}]")
                 base_label = f"bs{i}"
@@ -264,15 +275,27 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
             vlbl = f"fa{i}"
             n += 1
 
+        fade = _media_fade(ml.anim)
+
         if tilted:
             import math
             rad = math.radians(ml.rotate)
             rot = (f",rotate={rad:.6f}:c=none:ow={EW}:oh={EH}"
                    if abs(ml.rotate) > 1e-6 else "")
             filters.append(f"[{vlbl}]pad={EW}:{EH}:{ox}:{oy}:color=black@0{rot}[fp{i}]")
-            filters.append(f"[{base_label}][fp{i}]overlay={X}:{Y}:format=auto[fo{i}]")
+            # 인화지와 사진을 한 덩어리로 합친 뒤 통째로 페이드해야 같이 나타난다
+            filters.append(f"[ft{i}][fp{i}]overlay=0:0:format=auto[tile{i}]")
+            lbl = f"tile{i}"
+            if fade:
+                filters.append(f"[{lbl}]{fade}[tfa{i}]")
+                lbl = f"tfa{i}"
+            filters.append(f"[{base_label}][{lbl}]overlay={X}:{Y}:format=auto[fo{i}]")
             base_label = f"fo{i}"
             continue
+
+        if fade:
+            filters.append(f"[{vlbl}]{fade}[fva{i}]")
+            vlbl = f"fva{i}"
 
         filters.append(f"[{base_label}][{vlbl}]overlay={px}:{py}:format=auto[fo{i}]")
         base_label = f"fo{i}"
@@ -284,7 +307,8 @@ def build_scene_cmd(tpl: Template, scene: Scene, resolved: dict[str, str],
                 if tmp:
                     render_frame_border(pw, ph, radius, border_w, ml.border_color, tmp)
             inputs += ["-loop", "1", "-i", str(bp)]
-            filters.append(f"[{n}:v]format=rgba[fb{i}]")
+            _f = _media_fade(ml.anim)
+            filters.append(f"[{n}:v]format=rgba{',' + _f if _f else ''}[fb{i}]")
             filters.append(f"[{base_label}][fb{i}]overlay={px}:{py}:format=auto[fbo{i}]")
             base_label = f"fbo{i}"
             n += 1
