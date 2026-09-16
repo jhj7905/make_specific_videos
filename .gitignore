@@ -6,3 +6,4 @@ storage/uploads/
 vendor/
 __pycache__/
 *.pyc
+intake/mapping.json

@@ -22,10 +22,39 @@
 ./run.sh render jobs/demo.json --force        # 씬 캐시 무시하고 전부 다시
 ```
 
+## 주문 접수 (`intake`)
+
+스마트스토어 주문서에는 파일을 첨부할 수 없다. 결제 후 폼 링크를 안내해
+사진과 문구를 따로 받는 동선이 되고, 그 응답을 손으로 job.json 에 옮겨 적으면
+주문 1건마다 15~20개 필드를 타이핑하게 된다. 오타는 그대로 납품물에 나간다.
+
+```bash
+# 1회 — 폼 컬럼 ↔ 슬롯 매핑 초안. 못 맞춘 칸은 직접 채운다.
+./run.sh intake-map 응답.xlsx --template scrapbook_love_02
+
+# 매 주문 — 응답 전체를 job.json 으로
+./run.sh intake 응답.xlsx --out-dir jobs/orders
+```
+
+폼 컬럼 제목은 판매자가 자유롭게 쓴다. 자동 추측은 초안일 뿐이고
+(샘플에서 14개 중 12개), "보내는 분 성함" ↔ "보내는 사람" 처럼 조금만
+달라도 못 잡는다. 매핑을 한 번 확정해두면 폼을 고치기 전까지 재사용한다.
+
+`intake` 가 하는 정리:
+- 고객이 문자 그대로 친 `\n` 을 실제 줄바꿈으로
+- 앞뒤 공백·과다 개행 제거
+- 사진은 파일명 순서대로 `photo1..N` 에 배정. **숫자를 숫자로 비교**하므로
+  고객이 `1_.jpg, 2_.jpg, 10_.jpg` 로 번호를 매기면 그 순서가 그대로 간다
+- 필수 사진/문구 부족을 건별로 보고하고 exit 1
+
+사진 폴더는 `photos.root/<주문번호>/` 에서 찾는다. 다른 이름을 쓰면
+매핑의 `photos.folder_column` 에 폴더명이 든 컬럼을 지정한다.
+
 주문 1건의 표준 동선:
 
 ```bash
-./run.sh check jobs/1234.json           # 사고를 먼저 잡는다 (ERROR 면 exit 1)
+./run.sh intake 응답.xlsx --out-dir jobs/orders   # 폼 → job 일괄
+./run.sh check jobs/orders/1234.json    # 사고를 먼저 잡는다 (ERROR 면 exit 1)
 ./run.sh storyboard jobs/1234.json      # 레이아웃을 한 장으로 훑는다
 ./run.sh render jobs/1234.json          # 프리뷰 전달
 # 고객이 문구 수정을 요청 → job 파일만 고치고
@@ -56,6 +85,7 @@ engine/
   cache.py      씬 지문 계산 → 증분 렌더
   preflight.py  주문 사전 검증
   storyboard.py 씬별 정지컷 → 컨택트시트
+  intake.py     폼 응답(xlsx/csv) → job.json 일괄 생성
 templates/<id>/template.json + assets/
 ```
 

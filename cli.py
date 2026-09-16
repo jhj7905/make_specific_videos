@@ -3,6 +3,8 @@
 
   python cli.py templates                      # 템플릿 목록
   python cli.py inputs propose_neon_01         # 입력 슬롯 확인
+  python cli.py intake-map 응답.xlsx --template scrapbook_love_02   # 매핑 초안 (1회)
+  python cli.py intake 응답.xlsx --mapping intake/mapping.json      # 폼 → job 일괄
   python cli.py check jobs/demo.json           # 렌더 전 주문 검증 (사고 예방)
   python cli.py check jobs/demo.json --sale    # 납품 기준(음원 라이선스까지 ERROR)
   python cli.py storyboard jobs/demo.json      # 씬별 정지컷 한 장 (레이아웃 확인)
@@ -18,7 +20,7 @@ from pathlib import Path
 import config
 from engine.spec import list_templates, load_template, parse_size, Job
 from engine.render import render_job, resolve_inputs, prune_template
-from engine import preflight, storyboard
+from engine import preflight, storyboard, intake
 
 
 def cmd_templates(_):
@@ -79,6 +81,36 @@ def _prepared(job: Job, aspect: str | None):
     return tpl
 
 
+def cmd_intake_map(a):
+    cols, rows = intake.read_table(a.responses)
+    tpl = load_template(a.template)
+    m = intake.make_mapping(tpl, cols)
+    out = Path(a.out or "intake/mapping.json")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(m, ensure_ascii=False, indent=2), encoding="utf-8")
+    filled = sum(1 for v in m["text"].values() if v)
+    print(f"컬럼 {len(cols)}개 · 응답 {len(rows)}건")
+    print(f"매핑 초안: {out}  (문구 슬롯 {len(m['text'])}개 중 {filled}개 자동 추정)")
+    for slot, col in m["text"].items():
+        print(f"  {slot:<10} ← {col or '???  ← 직접 채우세요'}")
+    print("\n컬럼 목록:")
+    for c in cols:
+        print(f"  · {c}")
+
+
+def cmd_intake(a):
+    mapping = json.loads(Path(a.mapping).read_text(encoding="utf-8"))
+    tpl = load_template(a.template or mapping.get("template"))
+    cols, rows = intake.read_table(a.responses)
+    if a.row:
+        lo, _, hi = a.row.partition("-")
+        rows = rows[int(lo) - 1: int(hi or lo)]
+    built = intake.build_jobs(rows, tpl, mapping, Path(a.out_dir),
+                              aspect=a.aspect, dry_run=a.dry_run)
+    print(intake.report(built))
+    sys.exit(1 if any(b.problems for b in built) else 0)
+
+
 def cmd_check(a):
     job = Job.load(a.job)
     worst = 0
@@ -135,6 +167,22 @@ def main():
     d.add_argument("--order-id", default="DEMO")
     d.add_argument("--render", action="store_true")
     d.set_defaults(fn=cmd_demo)
+
+    im = sub.add_parser("intake-map", help="폼 응답 ↔ 템플릿 슬롯 매핑 초안 생성 (1회)")
+    im.add_argument("responses", help="네이버폼 응답 xlsx 또는 csv")
+    im.add_argument("--template", required=True)
+    im.add_argument("--out", default=None, help="기본 intake/mapping.json")
+    im.set_defaults(fn=cmd_intake_map)
+
+    it = sub.add_parser("intake", help="폼 응답 → job.json 일괄 생성")
+    it.add_argument("responses")
+    it.add_argument("--mapping", default="intake/mapping.json")
+    it.add_argument("--template", default=None, help="기본: 매핑 파일의 template")
+    it.add_argument("--out-dir", default="jobs")
+    it.add_argument("--aspect", default=None)
+    it.add_argument("--row", default=None, help="일부만 처리 (예: 3 또는 3-7)")
+    it.add_argument("--dry-run", action="store_true")
+    it.set_defaults(fn=cmd_intake)
 
     c = sub.add_parser("check", help="렌더 전 주문 검증")
     c.add_argument("job")
